@@ -1,14 +1,21 @@
-import logo from './logo.svg';
+//React
+import React from 'react';
+
+//Components
+import Graph from './Graph';
+
+//CSS
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div>
+        <h3>
           Route Testing Ground
-        </div>
+        </h3>
       </header>
+      <Graph/>
     </div>
   );
 }
