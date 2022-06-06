@@ -38,17 +38,20 @@ export default class Graph extends Component {
   }
 
   createConnections() {
-    // let svg = d3.select("#graph");
+    let svg = d3.select("#graph");
 
-    // fot
-    // var connection = d3.select("#graph")
-    //   .append('line')
-    //   .style("stroke", "black")
-    //   .style("stroke-width", 5)
-    //   .attr("x1", 150)
-    //   .attr("y1", 70)
-    //   .attr("x2", 450)
-    //   .attr("y2", 70);
+    for(let id in intersectional_connection_data) {
+      var connection = intersectional_connection_data[id];
+      
+      d3.select("#graph")
+      .append('line')
+      .style("stroke", "black")
+      .style("stroke-width", 5)
+      .attr("x1", connection.c1_node.x)
+      .attr("y1", connection.c1_node.y)
+      .attr("x2", connection.c2_node.x)
+      .attr("y2", connection.c2_node.y);
+    }
   }
 
   render() {
