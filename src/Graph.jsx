@@ -14,25 +14,44 @@ export default class Graph extends Component {
     // const width = 1200;
     // const height = 800;
     // const margin = { top: 30, right: 30, bottom: 30, left: 60 }
+    this.state = {
+      origin: {},
+      connection: {}
+    }
   }
 
   componentDidMount() {
-    this.createNodes();
     this.createConnections();
+    this.createNodes();
   }
 
   createNodes() {
     let svg = d3.select("#graph");
     
     for (let id in intersectional_node_data) {
-      let node = intersectional_node_data[id];
-      console.log(node)
+      let intersectional_node = intersectional_node_data[id];
+
       svg.append("circle")
+        .attr("id", `intersectional-node-${id}`)
         .attr("class", "intersectional-node")
-        .attr("cx", node.x)
-        .attr("cy", node.y)
+        .attr("cx", intersectional_node.x)
+        .attr("cy", intersectional_node.y)
         .attr("r",  10)
-        .style("fill", "black");
+        .style("fill", "black")
+        .on('mouseover', (data) => {
+          // console.log(data.target.id)
+          d3.select(`#${data.target.id}`)
+            .style("fill", "green")
+        })
+        .on('mouseout', () => {
+
+        })
+        .on('click', (data) => {
+          console.log("Clicking???", `#${data.target.id}`)
+          d3.select(`#${data.target.id}`)
+            .attr("r",  20)
+            .style("fill", "green")
+        });
     }
 
   }
@@ -54,7 +73,16 @@ export default class Graph extends Component {
     }
   }
 
+  reset() {
+    // this.forceUpdate()
+  }
+
   render() {
-    return <svg id="graph" width={1200} height={800}/>
+    return (
+      <div>
+        <button onClick={this.reset}>Reset</button>
+        <svg id="graph" width={1200} height={800}/>
+      </div>
+    )
   }
 }
