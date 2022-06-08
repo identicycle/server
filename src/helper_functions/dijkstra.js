@@ -3,9 +3,9 @@ const icd = require('../sample_datas/icd');
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
-    var output = -1;
+    var output = '-1';
     for (let id in routes) {
-        if (!checked.includes(id) && (output == -1 || routes[id].short < routes[output].short)) {
+        if (!checked.includes(id) && (output == '-1' || routes[id].short < routes[output].short)) {
             output = id;
         }
     }
@@ -53,7 +53,7 @@ function shortestRoute(startID, endID, ind, icd) {
         //Defines next as the next shortest
         next = smallestShort(routes, checked)
         checked.push(next)
-        if (next == -1) {
+        if (next == '-1') {
             console.log("Error: end not found")
         }
     }
