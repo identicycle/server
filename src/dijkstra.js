@@ -23,7 +23,7 @@ function smallestShort(routes, checked) {
 
 
 //Finds shortest route
-function shortestRoute(startID, endID) {
+function shortestRoute(startID, endID, ind, icd) {
     const bigNum = 99999999; //Arbitrarily large number
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
@@ -75,7 +75,7 @@ function shortestRoute(startID, endID) {
     return finalRoute
 }
 
-function allShortest(startID) {
+function allShortest(startID, ind, icd) {
     const bigNum = 99999999; //Arbitrarily large number
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
@@ -138,5 +138,4 @@ function printRoute(route) {
     }
 }
 
-//printRoute(shortestRoute('0','899'))
-allShortest('0')
+printRoute(shortestRoute('460','867', ind, icd))

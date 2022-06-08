@@ -2,6 +2,10 @@ import random
 
 def adj(i, size):
     output = [i-1, i+1, i+size, i-size]
+    if i % size == 0:
+        output.remove(i-1)
+    if i % size == size-1:
+        output.remove(i+1)
     for i in output:
         if i < 0 or i > size*size-1:
             output.remove(i)
@@ -49,14 +53,14 @@ def getAllConnections(data, idd):
     return output
 
 def nodeGen(idd, node):
-    return '{id:'+str(node[idd][0])+", x:"+str(node[idd][1])+', y:'+str(node[idd][2])+"}"
+    return '{id:'+str(node[idd][0]+1)+", x:"+str(node[idd][1])+', y:'+str(node[idd][2])+"}"
 
 def makeFile(data):
     with open("ind.js", 'w+') as f:
         f.write("module.exports = {\n")
         length = len(data[0])
         for i in range(length):
-            idd = str(data[0][i][0])
+            idd = str(data[0][i][0]+1)
             x = str(data[0][i][1])
             y = str(data[0][i][2])
             f.write(idd + ": {id:"+idd+", x:"+x+", y:"+y+"}")
@@ -72,7 +76,7 @@ def makeFile(data):
             c1 = data[1][i][0]
             c2 = data[1][i][1]
             w = str(data[1][i][2])
-            f.write(str(idx)+': {c1_id: '+str(c1)+', c2_id: '+str(c2)+', c1_node: '+nodeGen(c1, data[0])+', c2_node: '+nodeGen(c2, data[0])+', weight:'+w+'}')
+            f.write(str(idx)+': {c1_id: '+str(c1+1)+', c2_id: '+str(c2+1)+', c1_node: '+nodeGen(c1, data[0])+', c2_node: '+nodeGen(c2, data[0])+', weight:'+w+'}')
             if i != length-1:
                 f.write(',')
             f.write('\n')
