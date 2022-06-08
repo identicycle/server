@@ -3,7 +3,6 @@ const icd = require('../sample_datas/icd');
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
-
     var output = '-1';
     for (let id in routes) {
         if (!checked.includes(id) && (output == '-1' || routes[id].short+routes[id].gx < routes[output].short+routes[output].gx)) {
