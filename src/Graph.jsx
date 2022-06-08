@@ -95,21 +95,20 @@ export default class Graph extends Component {
         .attr("cy", intersectional_node.y)
         .attr("r",  node_size)
         .style("fill", "black")
-        .on('mouseover', (data) => {
-          // console.log(data.target.id)
-          d3.select(`#${data.target.id}`)
-            .style("fill", "green")
-        })
-        .on('mouseout', () => {
+        // .on('mouseover', (data) => {
+        //   // console.log(data.target.id)
+        //   // d3.select(`#${data.target.id}`)
+        //   //   .style("fill", "green")
+        // })
+        // .on('mouseout', () => {
 
-        })
+        // })
         .on('click', (data) => {
             //id of clicked node => ex. intersectional-node-31
             let elementId = `#${data.target.id}`
             
             //get node id => ex. 31
             let id = data.target.attributes.node_id.value;
-            console.log(id)
 
             //NODE ID SHOULD NEVER BE ZERO
             let origin = this.state.origin.id;
@@ -120,7 +119,6 @@ export default class Graph extends Component {
             } else if(origin && !destination) { //if origin exist & destination doesn't exist
               this.onClickDestination(id, elementId);
             } else { //if both origin & destination exist ignore it
-
             }
         });
     }
@@ -160,19 +158,24 @@ export default class Graph extends Component {
     d3.select(elementId)
       .attr("r",  4)
       .style("fill", "red")
-
+    
+    console.log(id, elementId)
     this.setState({
       destination: intersectional_node_data[id]
     });
 
-    this.findShortestPath();
+    this.findShortestPath(id);
   }
 
-  findShortestPath() {
+  findShortestPath(id) {
     let origin = this.state.origin;
-    let destination = this.state.destination;
-
-    // dijkstra.shortest(origin.id, destination.id, node )
+    console.log("here?")
+    
+    console.log(origin.id, typeof origin.id, id, typeof id)
+    let pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data);
+    console.log(pathNodes)
+    // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
+    // console.log(pathNodes)
   }
 
   reset() {

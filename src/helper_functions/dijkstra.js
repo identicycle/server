@@ -1,14 +1,22 @@
-const ind = require('../sample_datas/ind');
-const icd = require('../sample_datas/icd');
+// const ind = require('../sample_datas/ind');
+// const icd = require('../sample_datas/icd');
+
+const { geoConicConformalRaw } = require("d3");
+
+//convert require data ids from string to number (only for test purposes)
+// function test() {
+//     //conver node data from 
+//     for(let id in ind)
+// }
 
 //Adds weights to each connection. For now, purely based on distance
-function fixICD() {
-    for (let id in icd) {
-        let xDist = icd[id].c1_node.x - icd[id].c2_node.x
-        let yDist = icd[id].c1_node.y - icd[id].c2_node.y
-        icd[id].weight = Math.sqrt(xDist*xDist + yDist*yDist)
-    }
-}
+// function fixICD() {
+//     for (let id in icd) {
+//         let xDist = icd[id].c1_node.x - icd[id].c2_node.x
+//         let yDist = icd[id].c1_node.y - icd[id].c2_node.y
+//         icd[id].weight = Math.sqrt(xDist*xDist + yDist*yDist)
+//     }
+// }
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
@@ -22,8 +30,17 @@ function smallestShort(routes, checked) {
 }
 
 
-//Finds shortest route
+//Finds shortest route 
 function shortestRoute(startID, endID, ind, icd) {
+    if(typeof startID === "number") {
+        console.log("The startID is number! CONVERT TO STRING");
+        return;
+    }
+    if(typeof endID === "number") {
+        console.log("The endID is number! CONVERT TO STRING");
+        return;
+    } 
+
     const bigNum = 99999999; //Arbitrarily large number
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
@@ -49,6 +66,7 @@ function shortestRoute(startID, endID, ind, icd) {
                     to : ((icd[i].c2_id==next)?icd[i].c1_id:icd[i].c2_id)
                 })
             }
+            // console.log(i)
         }
 
         //Uses new connections to find new shortest routes
@@ -63,6 +81,8 @@ function shortestRoute(startID, endID, ind, icd) {
         //Defines next as the next shortest
         next = smallestShort(routes, checked)
         checked.push(next)
+        console.log(next, typeof next)
+        if (next == '-1') return; 
     }
 
     //Turns routes object into array of routes from start to end
@@ -115,6 +135,7 @@ function allShortest(startID, ind, icd) {
         //Defines next as the next shortest
         next = smallestShort(routes, checked)
         checked.push(next)
+        console.log(checked)
     }
 
     //Turns routes object into array of routes from start to ends
@@ -131,11 +152,15 @@ function allShortest(startID, ind, icd) {
     return output
 }
 
-// function printRoute(route) {
-//     console.log("Answer")
-//     for (let node in route) {
-//         console.log(route[node].id)
-//     }
-// }
+function printRoute(route) {
+    console.log("Answer")
+    for (let node in route) {
+        console.log(route[node].id)
+    }
+}
 
-printRoute(shortestRoute('460','867', ind, icd))
+// printRoute(shortestRoute("1", "100", ind, icd))
+
+module.exports = {
+    shortest: shortestRoute
+}
