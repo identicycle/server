@@ -3,9 +3,10 @@ const icd = require('../sample_datas/icd');
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
+
     var output = '-1';
     for (let id in routes) {
-        if (!checked.includes(id) && (output == '-1' || routes[id].short < routes[output].short)) {
+        if (!checked.includes(id) && (output == '-1' || routes[id].short+routes[id].gx < routes[output].short+routes[output].gx)) {
             output = id;
         }
     }
@@ -19,11 +20,16 @@ function shortestRoute(startID, endID, ind, icd) {
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
 
+    const Gx = id => {
+        return 
+    }
+
     //Populates routes object by setting all the shortests routes as very large except the starting route
     for (let id in ind) {
         routes[id] = {
             short: ((id != startID) ? bigNum : 0), 
-            from: startID
+            from: startID,
+            gx: (Math.abs(ind[id].x - ind[endID].x) + Math.abs(ind[id].y - ind[endID].y))
         };
     }
 
@@ -52,11 +58,8 @@ function shortestRoute(startID, endID, ind, icd) {
         }
 
         //Defines next as the next shortest
-        next = smallestShort(routes, checked)
+        next = smallestShort(routes, checked, ind, endID)
         checked.push(next)
-        if (next == -1) {
-            console.log("Error: end not found")
-        }
     }
 
     //Turns routes object into array of routes from start to end
@@ -67,62 +70,6 @@ function shortestRoute(startID, endID, ind, icd) {
         finalRoute.unshift(ind[routes[finalRoute[0].id].from])
     }
     return finalRoute
-}
-
-function allShortest(startID, ind, icd) {
-    const bigNum = 99999999; //Arbitrarily large number
-    var routes = {}; //Stores the shortest route to each node found so far
-    var checked = [startID]; //Stores all nodes already checked for routes
-
-    //Populates routes object by setting all the shortests routes as very large except the starting route
-    for (let id in ind) {
-        routes[id] = {
-            short: ((id != startID) ? bigNum : 0), 
-            from: startID
-        };
-    }
-
-    var next = startID
-    //Loops until we hit the final node. Checks all nodes before then
-    while (next != '-1') {
-
-        //Defines connected as all connections connected to the node being currently checked
-        let connected = []
-        for (let i in icd) {
-            if (icd[i].c1_id == next || icd[i].c2_id == next) {
-                connected.push({
-                    weight : icd[i].weight, 
-                    to : ((icd[i].c2_id==next)?icd[i].c1_id:icd[i].c2_id)
-                })
-            }
-        }
-
-        //Uses new connections to find new shortest routes
-        for (let i in connected) {
-            let j = connected[i].to
-            if (connected[i].weight + routes[next].short < routes[j].short) {
-                routes[j].short = connected[i].weight + routes[next].short
-                routes[j].from = next
-            }
-        }
-
-        //Defines next as the next shortest
-        next = smallestShort(routes, checked)
-        checked.push(next)
-    }
-
-    //Turns routes object into array of routes from start to ends
-    var output = {}
-    for (let endID in ind) {
-        let finalRoute = []
-        finalRoute.unshift(ind[endID])
-        while (finalRoute[0].id != startID) {
-            //console.log(finalRoute[0].id)
-            finalRoute.unshift(ind[routes[finalRoute[0].id].from])
-        }
-        output[endID] = finalRoute
-    }
-    return output
 }
 
 function printRoute(route) {
