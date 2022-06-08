@@ -1,4 +1,4 @@
-module.exports ={
+module.exports = {
   1: {
     id: 1,
     x: 100,
