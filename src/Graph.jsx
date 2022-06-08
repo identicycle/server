@@ -176,6 +176,23 @@ export default class Graph extends Component {
     console.log(pathNodes)
     // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
     // console.log(pathNodes)
+    this.createPathNodes(pathNodes);
+  }
+
+  createPathNodes(pathNodes) {
+    let svg = d3.select("#graph");
+    pathNodes.forEach((node) => {
+      let id = node.id;
+      console.log(node)
+      svg.append("circle")
+        .attr("id", `intersectional-node-${node.id}`)
+        .attr("node_id", id)
+        .attr("class", "intersectional-node")
+        .attr("cx", node.x)
+        .attr("cy", node.y)
+        .attr("r",  3)
+        .style("fill", "blue")
+    })
   }
 
   reset() {
