@@ -4,6 +4,9 @@ import React, { Component }  from 'react';
 //Library
 import * as d3 from "d3";
 
+//Algorithms
+import route_algorithms from './route_algorthms/route_algorithms';
+
 //Sample Data
 import intersectional_node_data from './sample_datas/intersectional_node_data';
 import intersectional_connection_data from './sample_datas/intersectional_connection_data';
@@ -15,8 +18,16 @@ export default class Graph extends Component {
     // const height = 800;
     // const margin = { top: 30, right: 30, bottom: 30, left: 60 }
     this.state = {
-      origin: {},
-      connection: {}
+      origin: {
+        id: 1,
+        x: 100,
+        y: 100
+      },
+      destination: {
+        id: 6,
+        x: 1000,
+        y: 600
+      }
     }
   }
 
@@ -75,6 +86,13 @@ export default class Graph extends Component {
 
   reset() {
     // this.forceUpdate()
+  }
+
+  runBruteForceAlgorthim() {
+    let origin = this.state.origin;
+    let destination = this.state.destination;
+
+    route_algorithms.brute_force(origin, destination, intersectional_node_data, intersectional_connection_data);
   }
 
   render() {
