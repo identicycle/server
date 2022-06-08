@@ -1,5 +1,5 @@
-const ind = require('./sample_datas/ind');
-const icd = require('./sample_datas/icd');
+const ind = require('../sample_datas/ind');
+const icd = require('../sample_datas/icd');
 
 //Adds weights to each connection. For now, purely based on distance
 function fixICD() {
@@ -131,11 +131,11 @@ function allShortest(startID, ind, icd) {
     return output
 }
 
-function printRoute(route) {
-    console.log("Answer")
-    for (let node in route) {
-        console.log(route[node].id)
-    }
-}
+// function printRoute(route) {
+//     console.log("Answer")
+//     for (let node in route) {
+//         console.log(route[node].id)
+//     }
+// }
 
 printRoute(shortestRoute('460','867', ind, icd))
