@@ -19,16 +19,12 @@ function shortestRoute(startID, endID, ind, icd) {
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
 
-    const Gx = id => {
-        return 
-    }
-
     //Populates routes object by setting all the shortests routes as very large except the starting route
     for (let id in ind) {
         routes[id] = {
             short: ((id != startID) ? bigNum : 0), 
             from: startID,
-            gx: (Math.abs(ind[id].x - ind[endID].x) + Math.abs(ind[id].y - ind[endID].y))
+            gx: (Math.abs(ind[id].x - ind[endID].x) + Math.abs(ind[id].y - ind[endID].y)) // Defined as rise + run as opposed to standard distance equation
         };
     }
 
