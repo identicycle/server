@@ -9,15 +9,6 @@ const { geoConicConformalRaw } = require("d3");
 //     for(let id in ind)
 // }
 
-//Adds weights to each connection. For now, purely based on distance
-// function fixICD() {
-//     for (let id in icd) {
-//         let xDist = icd[id].c1_node.x - icd[id].c2_node.x
-//         let yDist = icd[id].c1_node.y - icd[id].c2_node.y
-//         icd[id].weight = Math.sqrt(xDist*xDist + yDist*yDist)
-//     }
-// }
-
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
     var output = '-1';
@@ -29,8 +20,7 @@ function smallestShort(routes, checked) {
     return output
 }
 
-
-//Finds shortest route 
+//Finds shortest route
 function shortestRoute(startID, endID, ind, icd) {
     if(typeof startID === "number") {
         console.log("The startID is number! CONVERT TO STRING");
@@ -81,8 +71,10 @@ function shortestRoute(startID, endID, ind, icd) {
         //Defines next as the next shortest
         next = smallestShort(routes, checked)
         checked.push(next)
-        console.log(next, typeof next)
-        if (next == '-1') return; 
+        if (next == '-1') {
+            console.log("Error: end not found");
+            return;
+        }
     }
 
     //Turns routes object into array of routes from start to end
