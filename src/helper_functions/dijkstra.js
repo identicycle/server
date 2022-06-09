@@ -1,13 +1,5 @@
-// const ind = require('../sample_datas/ind');
-// const icd = require('../sample_datas/icd');
-
-const { geoConicConformalRaw } = require("d3");
-
-//convert require data ids from string to number (only for test purposes)
-// function test() {
-//     //conver node data from 
-//     for(let id in ind)
-// }
+const ind = require('../sample_datas/ind');
+const icd = require('../sample_datas/icd');
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
@@ -22,15 +14,6 @@ function smallestShort(routes, checked) {
 
 //Finds shortest route
 function shortestRoute(startID, endID, ind, icd) {
-    if(typeof startID === "number") {
-        console.log("The startID is number! CONVERT TO STRING");
-        return;
-    }
-    if(typeof endID === "number") {
-        console.log("The endID is number! CONVERT TO STRING");
-        return;
-    } 
-
     const bigNum = 99999999; //Arbitrarily large number
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
@@ -56,7 +39,6 @@ function shortestRoute(startID, endID, ind, icd) {
                     to : ((icd[i].c2_id==next)?icd[i].c1_id:icd[i].c2_id)
                 })
             }
-            // console.log(i)
         }
 
         //Uses new connections to find new shortest routes
@@ -127,7 +109,6 @@ function allShortest(startID, ind, icd) {
         //Defines next as the next shortest
         next = smallestShort(routes, checked)
         checked.push(next)
-        console.log(checked)
     }
 
     //Turns routes object into array of routes from start to ends

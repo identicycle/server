@@ -169,9 +169,8 @@ export default class Graph extends Component {
 
   findShortestPath(id) {
     let origin = this.state.origin;
-    console.log("here?")
     
-    console.log(origin.id, typeof origin.id, id, typeof id)
+    console.log(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data)
     let pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data);
     console.log(pathNodes)
     // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
