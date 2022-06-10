@@ -2,7 +2,7 @@
   "name": "route",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://www.lisanam.com/route",
+  "homepage": "https://www.lisanam.com/route",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -19,7 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
