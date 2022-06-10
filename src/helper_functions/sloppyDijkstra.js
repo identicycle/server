@@ -74,4 +74,8 @@ function printRoute(route) {
     }
 }
 
-printRoute(shortestRoute('1', '900', ind, icd))
+// printRoute(shortestRoute('1', '900', ind, icd))
+
+module.exports = {
+    shortest: shortestRoute
+}
