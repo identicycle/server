@@ -2,10 +2,13 @@
   "name": "route",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
+  "homepage" : "https://www.lisanam.com/route",
+  "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^13.5.0"
+  },
+  "dependencies": {
     "d3": "^7.4.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
