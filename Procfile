@@ -1,4 +1,5 @@
-web: npm i --production
+web: npm i
 web: npm run build
+web: npm install -g serve
 web: serve -s build
 
