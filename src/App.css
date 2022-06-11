@@ -18,3 +18,8 @@
   /* justify-content: center; */
   font-size: calc(10px + 2vmin);
 }
+
+#svg-graph-container {
+  height: 85vh;
+  width: 85vw;
+}

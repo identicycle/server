@@ -108,8 +108,7 @@ export default class Graph extends Component {
     let height = highestY + margin.top + margin.bottom;
     let width = highestX + margin.right + margin.left;
 
-    d3.select("#svg-graph-container")
-      .append("svg")
+    d3.select("#svg-graph")
       .attr("viewBox", `${lowestX} ${lowestY} ${width} ${height}`)
       .attr("id", "svg-graph")
       .attr("preserveAspectRatio", true)
@@ -271,10 +270,7 @@ export default class Graph extends Component {
 
   render() {
     return (
-      <div>
-        {/* <button onClick={this.reset}>Reset</button> */}
-        <div id="svg-graph-container" ref={this.wrapperRef}/>
-      </div>
+      <svg id="svg-graph" ref={this.wrapperRef}/>
     )
   }
 }

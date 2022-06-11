@@ -15,7 +15,9 @@ const App = () => {
           Route Testing Ground
         </h3>
       </header>
-      <Graph/>
+      <div id="svg-graph-container">
+        <Graph/>
+      </div>
     </div>
   );
 }
