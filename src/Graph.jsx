@@ -20,9 +20,20 @@ import intersectional_connection_data from './sample_datas/icd';
 export default class Graph extends Component {
   constructor(props) {
     super(props);
-    // const width = 1200;
-    // const height = 800;
-    // const margin = { top: 30, right: 30, bottom: 30, left: 60 }
+    this.width = 1000;
+    this.height = 800;
+    this.margin = {
+      top: 5,
+      bottom: 5,
+      right: 5,
+      left: 5
+    }
+    this.node = {
+      lowestX: 0,
+      lowestY: 0,
+      highestX: 0,
+      highestY: 0
+    }
     this.state = {
       SVGCreated: false,
       origin: {
@@ -35,65 +46,77 @@ export default class Graph extends Component {
         x: 1000,
         y: 600
       },
-      node: {
-        lowestX: 0,
-        lowestY: 0,
-        highestX: 0,
-        highestY: 0
-      }
-      // margin: {
-      //   marginTop: 0,
-      //   marginBottom: 0,
-      //   marginRight: 0,
-      //   marginLeft: 0
-      // }
+      connection_size: 1,
+      node_size: 2
     }
   }
 
   componentDidMount() {
-    if(!this.state.SVGCreated) {
+    if(!this.state.SVGCreated) { //to avoid creating multiple svg
       this.createSVG();
+      this.createConnections();
+      this.createNodes();
     }
-    this.createConnections();
-    this.createNodes();
   }
 
   createSVG() {
+    // get highest & lowest data
     let [highestX, lowestX] = data_analysis.findHighestLowestX(intersectional_node_data);
     let [highestY, lowestY] = data_analysis.findHighestLowestY(intersectional_node_data);
 
-    d3.select("#graph-container")
+    // get margins
+    let margin = {
+      top: highestY * 0.05,
+      bottom: highestY * 0.05,
+      right: highestX * 0.05,
+      left: highestX * 0.05,
+    }
+    let height = highestY + margin.top + margin.bottom;
+    let width = highestX + margin.right + margin.left;
+
+    d3.select("#svg-graph-container")
       .append("svg")
-      .attr("viewBox", `${lowestX} ${lowestY} ${highestX} ${highestY}`)
-      .attr("id", "graph")
+      .attr("viewBox", `${lowestX} ${lowestY} ${width} ${height}`)
+      .attr("id", "svg-graph")
       .attr("preserveAspectRatio", true)
+    
+    let node_size = highestX/100;
+    let connection_size = highestX/200;
+
+    //save
+    this.width = width;
+    this.height = height;
+    this.margin = margin;
+
+    this.node = {
+      lowestX: lowestX,
+      lowestY: lowestY,
+      highestX: highestX,
+      highestY: highestY
+    }
 
     this.setState({
-      "node": {
-        lowestX: lowestX,
-        lowestY: lowestY,
-        highestX: highestX,
-        highestY: highestY
-      },
-      "SVGCreated": true
+      "node_size": node_size > 2 ? node_size : 2,
+      "connection_size": connection_size > 1? connection_size : 1,
+      "SVGCreated": true //to avoid creating multiple svg
     });
   }
 
   createNodes() {
-    let svg = d3.select("#graph");
-    let node_size = 2;
+    let nodeContainer = d3.select("#svg-graph").append("g").attr("id", "node-container");
     // this.state.node.highestX * 0.005;
     
     for (let id in intersectional_node_data) {
       let intersectional_node = intersectional_node_data[id];
 
-      svg.append("circle")
+      nodeContainer.append("circle")
         .attr("id", `intersectional-node-${id}`)
+        .attr("class", "node")
         .attr("node_id", id)
         .attr("class", "intersectional-node")
-        .attr("cx", intersectional_node.x)
-        .attr("cy", intersectional_node.y)
-        .attr("r",  node_size)
+        .attr("cx", intersectional_node.x + this.margin.left)
+        .attr("cy", intersectional_node.y + this.margin.top)
+        .attr("r",  this.state.node_size)
         .style("fill", "black")
         // .on('mouseover', (data) => {
         //   // console.log(data.target.id)
@@ -126,27 +149,26 @@ export default class Graph extends Component {
   }
 
   createConnections() {
-    let svg = d3.select("#graph");
-    let connection_size = 1;
-    // this.state.node.highestX * 0.01;
+    let svg = d3.select("#svg-graph");
 
     for(let id in intersectional_connection_data) {
       var connection = intersectional_connection_data[id];
       
-      d3.select("#graph")
+      d3.select("#svg-graph")
       .append('line')
       .style("stroke", "black")
-      .style("stroke-width", connection_size)
-      .attr("x1", connection.c1_node.x)
-      .attr("y1", connection.c1_node.y)
-      .attr("x2", connection.c2_node.x)
-      .attr("y2", connection.c2_node.y);
+      .style("stroke-width", this.state.connection_size)
+      .attr("x1", connection.c1_node.x + this.margin.left)
+      .attr("y1", connection.c1_node.y + this.margin.top)
+      .attr("x2", connection.c2_node.x + this.margin.left)
+      .attr("y2", connection.c2_node.y + this.margin.top);
     }
   }
 
   onClickOrigin(id, elementId) {
     d3.select(elementId)
-      .attr("r",  4)
+      .attr("id", "node-origin")
+      .attr("r", this.state.node_size * 2)
       .style("fill", "green")
 
     this.setState({
@@ -156,7 +178,8 @@ export default class Graph extends Component {
 
   onClickDestination(id, elementId) {
     d3.select(elementId)
-      .attr("r",  4)
+      .attr("id", "node-destination")
+      .attr("r",  this.state.node_size * 2)
       .style("fill", "red")
     
     console.log(id, elementId)
@@ -179,17 +202,17 @@ export default class Graph extends Component {
   }
 
   createPathNodes(pathNodes) {
-    let svg = d3.select("#graph");
+    let pathContainer = d3.select("#svg-graph").append("g").attr("id", "path-container");
+
     pathNodes.forEach((node) => {
       let id = node.id;
-      console.log(node)
-      svg.append("circle")
-        .attr("id", `intersectional-node-${node.id}`)
+      pathContainer.append("circle")
+        .attr("id", `path-node-${node.id}`)
         .attr("node_id", id)
-        .attr("class", "intersectional-node")
-        .attr("cx", node.x)
-        .attr("cy", node.y)
-        .attr("r",  3)
+        .attr("class", "path-node")
+        .attr("cx", node.x + this.margin.left)
+        .attr("cy", node.y + this.margin.top)
+        .attr("r",  this.state.node_size * 1.5)
         .style("fill", "blue")
     })
   }
@@ -209,7 +232,7 @@ export default class Graph extends Component {
     return (
       <div>
         {/* <button onClick={this.reset}>Reset</button> */}
-        <div id="graph-container"/>
+        <div id="svg-graph-container"/>
       </div>
     )
   }
