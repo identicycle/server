@@ -49,6 +49,8 @@ export default class Graph extends Component {
       connection_size: 1,
       node_size: 2
     }
+    this.wrapperRef = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +58,38 @@ export default class Graph extends Component {
       this.createSVG();
       this.createConnections();
       this.createNodes();
+      document.addEventListener("mousedown", this.handleClickOutside);
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  handleClickOutside(event) {
+    if(this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+      //reset
+      
+      //remove origin & destination
+      d3.select("#node-origin").remove();
+      d3.select("#node-destination").remove();
+
+      //remove path nodes
+      d3.select("#path-container").remove();
+
+      //reset origin & destination
+      this.setState({
+        origin: {
+          id: 0,
+          x: 100,
+          y: 100
+        },
+        destination: {
+          id: 0,
+          x: 1000,
+          y: 600
+        }
+      })
     }
   }
 
@@ -217,26 +251,7 @@ export default class Graph extends Component {
   }
 
   reset() {
-    //remove origin & destination
-    d3.select("#node-origin").remove();
-    d3.select("#node-destination").remove();
 
-    //remove path nodes
-    d3.select("#path-container").remove();
-
-    //reset origin & destination
-    this.setState({
-      origin: {
-        id: 0,
-        x: 100,
-        y: 100
-      },
-      destination: {
-        id: 0,
-        x: 1000,
-        y: 600
-      }
-    })
   }
 
   // runBruteForceAlgorthim() {
@@ -247,12 +262,8 @@ export default class Graph extends Component {
   // }
 
   render() {
-    if(this.props.reset) {
-      this.reset();
-    }
-
     return (
-      <div>
+      <div ref={this.wrapperRef}>
         {/* <button onClick={this.reset}>Reset</button> */}
         <div id="svg-graph-container"/>
       </div>
