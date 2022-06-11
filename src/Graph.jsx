@@ -136,10 +136,11 @@ export default class Graph extends Component {
             //NODE ID SHOULD NEVER BE ZERO
             let origin = this.state.origin.id;
             let destination = this.state.destination.id;
+            console.log("For testing", origin, typeof origin, destination, id, typeof id, id === origin)
             
             if(!origin) { //if origin doesn't exist => make the clicked node origin
               this.onClickOrigin(id, elementId);
-            } else if(origin && !destination) { //if origin exist & destination doesn't exist
+            } else if(origin && !destination && id != origin) { //if origin exist & destination doesn't exist and if the destination is not equal to origin
               this.onClickDestination(id, elementId);
             } else { //if both origin & destination exist ignore it
             }
