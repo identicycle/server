@@ -82,5 +82,5 @@ def makeFile(data):
             f.write('\n')
             idx+=1
         f.write('}')
-makeFile(generate(20))
+makeFile(generate(15))
             
