@@ -173,9 +173,9 @@ export default class Graph extends Component {
             // console.log("For testing", origin, typeof origin, destination, id, typeof id, id === origin)
             
             if(!origin) { //if origin doesn't exist => make the clicked node origin
-              this.onClickOrigin(id, elementId);
+              this.onClickOrigin(id);
             } else if(origin && !destination && id != origin) { //if origin exist & destination doesn't exist and if the destination is not equal to origin
-              this.onClickDestination(id, elementId);
+              this.onClickDestination(id);
             } else { //if both origin & destination exist ignore it
             }
         });
@@ -200,25 +200,33 @@ export default class Graph extends Component {
     }
   }
 
-  onClickOrigin(id, elementId) {
-    d3.select(elementId)
+  onClickOrigin(id) {
+    let node = intersectional_node_data[id]
+    d3.select("#node-container")
+      .append("circle")
       .attr("id", "node-origin")
       .attr("r", this.state.node_size * 2)
+      .attr("cx", node.x + this.margin.left)
+      .attr("cy", node.y + this.margin.top)
       .style("fill", "green")
 
     this.setState({
-      origin: intersectional_node_data[id]
+      origin: node
     });
   }
 
-  onClickDestination(id, elementId) {
-    d3.select(elementId)
+  onClickDestination(id) {
+    let node = intersectional_node_data[id]
+    d3.select("#node-container")
+      .append("circle")
       .attr("id", "node-destination")
       .attr("r",  this.state.node_size * 2)
+      .attr("cx", node.x + this.margin.left)
+      .attr("cy", node.y + this.margin.top)
       .style("fill", "red")
 
     this.setState({
-      destination: intersectional_node_data[id]
+      destination: node
     });
 
     this.findShortestPath(id);
