@@ -100,10 +100,10 @@ export default class Graph extends Component {
 
     // get margins
     let margin = {
-      top: highestY * 0.03,
-      bottom: highestY * 0.03,
-      right: highestX * 0.03,
-      left: highestX * 0.03,
+      top: highestY * 0.05,
+      bottom: highestY * 0.05,
+      right: highestX * 0.05,
+      left: highestX * 0.05,
     }
     let height = highestY + margin.top + margin.bottom;
     let width = highestX + margin.right + margin.left;
