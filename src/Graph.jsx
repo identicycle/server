@@ -136,7 +136,7 @@ export default class Graph extends Component {
             //NODE ID SHOULD NEVER BE ZERO
             let origin = this.state.origin.id;
             let destination = this.state.destination.id;
-            console.log("For testing", origin, typeof origin, destination, id, typeof id, id === origin)
+            // console.log("For testing", origin, typeof origin, destination, id, typeof id, id === origin)
             
             if(!origin) { //if origin doesn't exist => make the clicked node origin
               this.onClickOrigin(id, elementId);
@@ -182,8 +182,7 @@ export default class Graph extends Component {
       .attr("id", "node-destination")
       .attr("r",  this.state.node_size * 2)
       .style("fill", "red")
-    
-    console.log(id, elementId)
+
     this.setState({
       destination: intersectional_node_data[id]
     });
@@ -194,11 +193,10 @@ export default class Graph extends Component {
   findShortestPath(id) {
     let origin = this.state.origin;
     
-    console.log(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data)
+    // console.log(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data)
     let pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data);
-    console.log(pathNodes)
     // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
-    // console.log(pathNodes)
+
     this.createPathNodes(pathNodes);
   }
 
@@ -219,7 +217,26 @@ export default class Graph extends Component {
   }
 
   reset() {
-    // this.forceUpdate()
+    //remove origin & destination
+    d3.select("#node-origin").remove();
+    d3.select("#node-destination").remove();
+
+    //remove path nodes
+    d3.select("#path-container").remove();
+
+    //reset origin & destination
+    this.setState({
+      origin: {
+        id: 0,
+        x: 100,
+        y: 100
+      },
+      destination: {
+        id: 0,
+        x: 1000,
+        y: 600
+      }
+    })
   }
 
   // runBruteForceAlgorthim() {
@@ -230,6 +247,10 @@ export default class Graph extends Component {
   // }
 
   render() {
+    if(this.props.reset) {
+      this.reset();
+    }
+
     return (
       <div>
         {/* <button onClick={this.reset}>Reset</button> */}
