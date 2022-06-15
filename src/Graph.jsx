@@ -14,8 +14,8 @@ import dijkstra from './helper_functions/dijkstra';
 
 //Sample Data
 //NODE ID SHOULD NEVER BE ZERO
-import intersectional_node_data from './sample_datas/node_data';
-import intersectional_connection_data from './sample_datas/connection_data';
+import intersectional_node_data from './sample_datas/ind';
+import intersectional_connection_data from './sample_datas/icd';
 
 export default class Graph extends Component {
   constructor(props) {
