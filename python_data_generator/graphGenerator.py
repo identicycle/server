@@ -69,18 +69,18 @@ def makeFile(data):
             f.write('\n')
         f.write('}')
     with open("icd.js", 'w+') as f:
-        f.write("module.exports = {\n")
+        f.write("module.exports = [\n")
         length = len(data[1])
         idx = 1
         for i in range(length):
             c1 = data[1][i][0]
             c2 = data[1][i][1]
             w = str(data[1][i][2])
-            f.write(str(idx)+': {c1_id: '+str(c1+1)+', c2_id: '+str(c2+1)+', c1_node: '+nodeGen(c1, data[0])+', c2_node: '+nodeGen(c2, data[0])+', weight:'+w+'}')
+            f.write('{c1_id: '+str(c1+1)+', c2_id: '+str(c2+1)+', c1_node: '+nodeGen(c1, data[0])+', c2_node: '+nodeGen(c2, data[0])+', weight:'+w+'}')
             if i != length-1:
                 f.write(',')
             f.write('\n')
             idx+=1
-        f.write('}')
+        f.write(']')
 makeFile(generate(12))
             

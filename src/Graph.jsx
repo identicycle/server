@@ -10,7 +10,10 @@ import "./Graph.css";
 //Algorithms
 import data_analysis from './helperFunctions/dataAnalysis';
 import dijkstra from './routeFunctions/dijkstra';
+import byDistance from './routeFunctions/byDistance';
 // import route_algorithms from './helperFunctions/routeAlgorithms';
+
+import gxCalculation from './routeFunctions/gxCalculation';
 
 //Sample Data
 //NODE ID SHOULD NEVER BE ZERO
@@ -49,8 +52,12 @@ export default class Graph extends Component {
       connection_size: 1,
       node_size: 2
     }
+
+    //for route algorithm
+    this.gx = {};
+
     this.wrapperRef = React.createRef();
-    this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -58,15 +65,16 @@ export default class Graph extends Component {
       this.createSVG();
       this.createConnections();
       this.createNodes();
-      document.addEventListener("mousedown", this.handleClickOutside);
+      document.addEventListener("mousedown", this.reset);
+      this.gx = gxCalculation(intersectional_node_data);
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
+    document.removeEventListener("mousedown", this.reset);
   }
 
-  handleClickOutside(event) {
+  reset(event) {
     if(this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
       //reset
       
@@ -235,7 +243,7 @@ export default class Graph extends Component {
     let origin = this.state.origin;
     
     // console.log(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data)
-    let pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data);
+    let pathNodes = byDistance.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
 
     this.createPathNodes(pathNodes);
@@ -255,10 +263,6 @@ export default class Graph extends Component {
         .attr("r",  this.state.node_size * 1.5)
         .style("fill", "blue")
     })
-  }
-
-  reset() {
-
   }
 
   // runBruteForceAlgorthim() {
