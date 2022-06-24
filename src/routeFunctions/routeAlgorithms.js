@@ -5,6 +5,7 @@ module.exports = {
   // will be the answers to test other algorthrim & time we measure against
   brute_force: (origin, destination, nodes, connections) => {
     
+    
   },
 
   // Find the node closest to the destination using the coordinates

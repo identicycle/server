@@ -30,6 +30,11 @@ module.exports = {
     let index = array.indexOf(id);
     // return array[0] === intersectionalNodeId ? nodeArray.slice(0, index) : nodeArray(index);
   },
+  //helper function: give back array of node that to reach destination
+  getNodeArrayToDestination: (id, intersectionalNodeId, nodeArray) => {
+    let index = array.indexOf(id);
+    // return array[0] === intersectionalNodeId ? nodeArray.slice(0, index) : nodeArray(index);
+  },
   //take in intersectionalPath and turn it into all node path array
   getAllNodesInPath: (intersectionalPath) => {
     let pathNodes = [];
@@ -42,16 +47,16 @@ module.exports = {
         let origin = intersectionalPathNode;
         let nextNode = intersectionalPath[1];
 
-        pathNodes.append(getNeededNodeArray(origin, nextNode, nodeArrayObject));
+        pathNodes.concat(getNodeArrayToOrigin(origin, nextNode, nodeArrayObject));
 
       } else if(i == intersectionalPath.length() - 1) { //if it's destination
         let destination = intersectionalPathNode;
         let previousNode = intersectionalPath[-1];
 
-        pathNodes.append(getNeededNodeArray(destination, previousNode, nodeArray));
+        pathNodes.concat(getNodeArrayToDestination(destination, previousNode, nodeArray));
 
         //add destination, because that's missing
-        pathNodes.append(nodeArray)
+        pathNodes.concat(nodeArray)
 
       } else { //all other intersectional node
         pathNodes.concat(nodeArray);

@@ -8,9 +8,9 @@ import * as d3 from "d3";
 import "./Graph.css";
 
 //Algorithms
-import data_analysis from './helper_functions/data_analysis';
-import dijkstra from './helper_functions/dijkstra';
-// import route_algorithms from './helper_functions/route_algorithms';
+import data_analysis from './helperFunctions/dataAnalysis';
+import dijkstra from './routeFunctions/dijkstra';
+// import route_algorithms from './helperFunctions/routeAlgorithms';
 
 //Sample Data
 //NODE ID SHOULD NEVER BE ZERO
