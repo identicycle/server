@@ -11,7 +11,6 @@ export default { //get shortest path by choosing the closest node to the destina
       let connectedNodes = getAllConnectedNodes(startID, intersectional_connection_data);
       let closestNode = findClosestNode(destinationID, connectedNodes, gx);
       path.push(closestNode);
-      console.log(closestNode, connectedNodes)
 
       if(closestNode.id == destinationID) { //if the destination is found
         found = true;

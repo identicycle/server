@@ -10,6 +10,7 @@ import "./Graph.css";
 //Algorithms
 import data_analysis from './helperFunctions/dataAnalysis';
 import dijkstra from './routeFunctions/dijkstra';
+import sloppyDijkstra from './routeFunctions/sloppyDijkstra';
 import byDistance from './routeFunctions/byDistance';
 // import route_algorithms from './helperFunctions/routeAlgorithms';
 
@@ -243,7 +244,7 @@ export default class Graph extends Component {
     let origin = this.state.origin;
     
     // console.log(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data)
-    let pathNodes = byDistance.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    let pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
 
     this.createPathNodes(pathNodes);
