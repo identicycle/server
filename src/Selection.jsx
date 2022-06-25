@@ -15,9 +15,15 @@ export default class Selection extends Component {
   render() {
     return (
       <div className="selection" ref={this.props.wrapperRef}>
-        <SelectCard title="Dijkstra" algorithm="dijkstra" current={this.props.current} switchCurrent={this.props.switchCurrent}/>
-        <SelectCard title="Sloppy Dijkstra" algorithm="sloppyDijkstra" current={this.props.current} switchCurrent={this.props.switchCurrent}/>
-        <SelectCard title="By Distance" algorithm="byDistance" current={this.props.current} switchCurrent={this.props.switchCurrent}/>
+        <SelectCard title="Dijkstra" algorithm="dijkstra" 
+          current={this.props.current} switchCurrent={this.props.switchCurrent}
+          time={this.props.times.dijkstra}/>
+        <SelectCard title="Sloppy Dijkstra" algorithm="sloppyDijkstra" 
+          current={this.props.current} switchCurrent={this.props.switchCurrent}
+          time={this.props.times.sloppyDijkstra}/>
+        <SelectCard title="By Distance" algorithm="byDistance" 
+          current={this.props.current} switchCurrent={this.props.switchCurrent}
+          time={this.props.times.byDistance}/>
       </div>
     );
   }

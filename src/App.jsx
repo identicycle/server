@@ -15,7 +15,12 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      algorithm: "sloppyDijkstra"
+      algorithm: "dijkstra",
+      times: {
+        sloppyDijkstra: 0,
+        dijkstra: 0,
+        byDistance: 0
+      }
     }
 
     //for reset function
@@ -23,10 +28,15 @@ export default class App extends Component {
     this.selectionRef = React.createRef(); 
 
     this.switchCurrent = this.switchCurrent.bind(this);
+    this.updatePerformanceTimes = this.updatePerformanceTimes.bind(this);
   }
 
   switchCurrent(algorithm) { //switch to different algorithm
     this.setState({algorithm: algorithm});
+  }
+
+  updatePerformanceTimes(times) {
+    this.setState({time: times})
   }
 
   render() {
@@ -40,11 +50,12 @@ export default class App extends Component {
         <div className='app-container'>
           <div id="svg-graph-container">
             <Graph current={this.state.algorithm} 
+              times={this.state.times} updatePerformanceTimes={this.updatePerformanceTimes}
               graphRef={this.graphRef} selectionRef={this.selectionRef}/>
           </div>
           <div className='selection-container'>
             <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent} 
-              wrapperRef={this.selectionRef}/>
+              times={this.state.times} wrapperRef={this.selectionRef}/>
           </div>
         </div>
       </div>

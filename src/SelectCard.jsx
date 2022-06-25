@@ -14,6 +14,9 @@ export default class SelectCard extends Component {
         className={`select card ${this.props.current === this.algorithm ? "selected" : ""}`} onMouseOver={() => this.props.switchCurrent(this.algorithm)} 
         onClick={() => this.props.switchCurrent(this.algorithm)}>
         <div className='card-title'>{this.title}</div>
+        <div>
+          <div>{this.props.time}</div>
+        </div>
       </div>
     );
   }

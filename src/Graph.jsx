@@ -76,9 +76,6 @@ export default class Graph extends Component {
   
   reset(event) {
     if(this.props.graphRef && !this.props.graphRef.current.contains(event.target) && this.props.selectionRef && !this.props.selectionRef.current.contains(event.target)) {
-      console.log("reset")
-      //reset
-      
       //remove origin & destination
       d3.select("#node-origin").remove();
       d3.select("#node-destination").remove();
@@ -89,12 +86,12 @@ export default class Graph extends Component {
       //reset origin & destination
       this.setState({
         origin: {
-          id: -1,
+          id: 0,
           x: 100,
           y: 100
         },
         destination: {
-          id: -1,
+          id: 0,
           x: 1000,
           y: 600
         }
@@ -166,12 +163,9 @@ export default class Graph extends Component {
           d3.select(`#intersectional-node-${id}`)
             .attr("r", this.state.node_size)
         })
-        .on('click', (data) => {
+        .on('click', () => {
           //id of clicked node => ex. intersectional-node-31
-          let elementId = `#${data.target.id}`
-          
-          //get node id => ex. 31
-          let id = data.target.attributes.node_id.value;
+          let elementId = `#intersectional-node-${id}`
 
           //NODE ID SHOULD NEVER BE ZERO
           let origin = this.state.origin.id;
@@ -183,6 +177,7 @@ export default class Graph extends Component {
           } else if(origin && !destination && id != origin) { //if origin exist & destination doesn't exist and if the destination is not equal to origin
             this.onClickDestination(id);
           } else { //if both origin & destination exist ignore it
+            console.log("Error! click proper origin & destination!!")
           }
         });
     }
@@ -207,7 +202,6 @@ export default class Graph extends Component {
   }
 
   onClickOrigin(id) {
-    console.log("Getting here??")
     let node = intersectional_node_data[id]
     d3.select(".node-container")
       .append("circle")
@@ -241,16 +235,29 @@ export default class Graph extends Component {
 
   findShortestPath(id) { //find the shortest path for all algoritm
     let origin = this.state.origin;
-    
-    let pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "sloppyDijkstra", "purple");
+    let pathNodes, startTime, endTime;
+    let times = {}
 
+    startTime = new Date().getTime();
+    pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    this.createPathNodes(pathNodes, "sloppyDijkstra", "purple");
+    endTime = new Date().getTime();
+    times.sloppyDijkstra = endTime - startTime;
+
+    startTime = new Date().getTime();
     pathNodes = byDistance.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     this.createPathNodes(pathNodes, "byDistance", "red");   
+    endTime = new Date().getTime();
+    times.dijkstra = endTime - startTime;
     
+    startTime = new Date().getTime();
     pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "dijkstra", "blue");    
+    this.createPathNodes(pathNodes, "dijkstra", "blue");  
+    endTime = new Date().getTime();
+    times.byDistance = endTime - startTime; 
 
+    console.log(times)
+    this.props.updatePerformanceTimes(times);
   }
 
   createPathNodes(pathNodes, algorithm, color) {
@@ -278,9 +285,12 @@ export default class Graph extends Component {
       <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>
         <g className="connection-container"/>
         <g className="node-container"/>
-        <g id="dijkstra" className={current === "dijkstra" ? "" : "hidden"}/>
-        <g id="sloppyDijkstra" className={current === "sloppyDijkstra" ? "" : "hidden"}/>
-        <g id="byDistance" className={current === "byDistance" ? "" : "hidden"}/>
+        <g id="dijkstra" className={current === "dijkstra" ? "" : "hidden"}
+          pointerEvents="none"/>
+        <g id="sloppyDijkstra" className={current === "sloppyDijkstra" ? "" : "hidden"}
+          pointerEvents="none"/>
+        <g id="byDistance" className={current === "byDistance" ? "" : "hidden"}
+          pointerEvents="none"/>
       </svg>
     )
   }
