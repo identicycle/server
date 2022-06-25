@@ -56,6 +56,8 @@ export default class Graph extends Component {
 
     //for route algorithm
     this.gx = {};
+
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +66,39 @@ export default class Graph extends Component {
       this.createConnections();
       this.createNodes();
       this.gx = gxCalculation(intersectional_node_data);
+      document.addEventListener("mousedown", this.reset); //for reset
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.reset);
+  }
+  
+  reset(event) {
+    if(this.props.graphRef && !this.props.graphRef.current.contains(event.target) && this.props.selectionRef && !this.props.selectionRef.current.contains(event.target)) {
+      console.log("reset")
+      //reset
+      
+      //remove origin & destination
+      d3.select("#node-origin").remove();
+      d3.select("#node-destination").remove();
+
+      //remove path nodes
+      d3.selectAll(".path-container").remove();
+
+      //reset origin & destination
+      this.setState({
+        origin: {
+          id: -1,
+          x: 100,
+          y: 100
+        },
+        destination: {
+          id: -1,
+          x: 1000,
+          y: 600
+        }
+      })
     }
   }
 
@@ -172,6 +207,7 @@ export default class Graph extends Component {
   }
 
   onClickOrigin(id) {
+    console.log("Getting here??")
     let node = intersectional_node_data[id]
     d3.select(".node-container")
       .append("circle")
@@ -239,7 +275,7 @@ export default class Graph extends Component {
     let current = this.props.current;
 
     return (
-      <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.wrapperRef}>
+      <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>
         <g className="connection-container"/>
         <g className="node-container"/>
         <g id="dijkstra" className={current === "dijkstra" ? "" : "hidden"}/>

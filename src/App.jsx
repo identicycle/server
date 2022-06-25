@@ -21,45 +21,8 @@ export default class App extends Component {
     //for reset function
     this.graphRef = React.createRef(); 
     this.selectionRef = React.createRef(); 
-    this.reset = this.reset.bind(this);
 
     this.switchCurrent = this.switchCurrent.bind(this);
-  }
-
-  componentDidMount() {
-    document.addEventListener("mousedown", this.reset); //for reset
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.reset);
-  }
-  
-  reset(event) {
-    if(this.graphRef && !this.graphRef.current.contains(event.target) && this.selectionRef && !this.selectionRef.current.contains(event.target)) {
-      console.log("reset")
-      //reset
-      
-      //remove origin & destination
-      d3.select("#node-origin").remove();
-      d3.select("#node-destination").remove();
-
-      //remove path nodes
-      d3.selectAll(".path-container").remove();
-
-      //reset origin & destination
-      // this.setState({
-      //   origin: {
-      //     id: -1,
-      //     x: 100,
-      //     y: 100
-      //   },
-      //   destination: {
-      //     id: -1,
-      //     x: 1000,
-      //     y: 600
-      //   }
-      // })
-    }
   }
 
   switchCurrent(algorithm) { //switch to different algorithm
@@ -76,7 +39,8 @@ export default class App extends Component {
         </header>
         <div className='app-container'>
           <div id="svg-graph-container">
-            <Graph current={this.state.algorithm} wrapperRef={this.graphRef}/>
+            <Graph current={this.state.algorithm} 
+              graphRef={this.graphRef} selectionRef={this.selectionRef}/>
           </div>
           <div className='selection-container'>
             <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent} 
