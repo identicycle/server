@@ -19,7 +19,21 @@
   font-size: calc(10px + 2vmin);
 }
 
-#svg-graph-container {
+.app-container {
+  display: flex;
+  width: 90vw;
   height: 85vh;
-  width: 85vw;
+}
+
+#svg-graph-container {
+  width: 70%;
+  height: 100%;
+  background-color: aqua;
+}
+
+.selection-container {
+  width: 30%;
+  height: 100%;
+  padding-top: 2vh;
+  background-color: pink;
 }

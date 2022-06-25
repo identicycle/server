@@ -56,9 +56,6 @@ export default class Graph extends Component {
 
     //for route algorithm
     this.gx = {};
-
-    this.wrapperRef = React.createRef();
-    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -66,39 +63,7 @@ export default class Graph extends Component {
       this.createSVG();
       this.createConnections();
       this.createNodes();
-      document.addEventListener("mousedown", this.reset);
       this.gx = gxCalculation(intersectional_node_data);
-    }
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.reset);
-  }
-
-  reset(event) {
-    if(this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
-      //reset
-      
-      //remove origin & destination
-      d3.select("#node-origin").remove();
-      d3.select("#node-destination").remove();
-
-      //remove path nodes
-      d3.select("#path-container").remove();
-
-      //reset origin & destination
-      this.setState({
-        origin: {
-          id: 0,
-          x: 100,
-          y: 100
-        },
-        destination: {
-          id: 0,
-          x: 1000,
-          y: 600
-        }
-      })
     }
   }
 
@@ -119,8 +84,6 @@ export default class Graph extends Component {
 
     d3.select("#svg-graph")
       .attr("viewBox", `${lowestX} ${lowestY} ${width} ${height}`)
-      .attr("id", "svg-graph")
-      .attr("preserveAspectRatio", true)
     
     let node_size = highestX/100;
     let connection_size = highestX/200;
@@ -145,7 +108,7 @@ export default class Graph extends Component {
   }
 
   createNodes() {
-    let nodeContainer = d3.select("#svg-graph").append("g").attr("id", "node-container");
+    let nodeContainer = d3.select(".node-container")
     // this.state.node.highestX * 0.005;
     
     for (let id in intersectional_node_data) {
@@ -160,44 +123,44 @@ export default class Graph extends Component {
         .attr("cy", intersectional_node.y + this.margin.top)
         .attr("r",  this.state.node_size)
         .style("fill", "black")
-        // .on('mouseover', (data) => {
-        //   // console.log(data.target.id)
-        //   // d3.select(`#${data.target.id}`)
-        //   //   .style("fill", "green")
-        // })
-        // .on('mouseout', () => {
-
-        // })
+        .on('mouseover', () => { //on hover make the node bigger
+          d3.select(`#intersectional-node-${id}`)
+            .attr("r", this.state.node_size * 1.2)
+        })
+        .on('mouseout', () => { //when mouse stops hovering change the node size back to normal
+          d3.select(`#intersectional-node-${id}`)
+            .attr("r", this.state.node_size)
+        })
         .on('click', (data) => {
-            //id of clicked node => ex. intersectional-node-31
-            let elementId = `#${data.target.id}`
-            
-            //get node id => ex. 31
-            let id = data.target.attributes.node_id.value;
+          //id of clicked node => ex. intersectional-node-31
+          let elementId = `#${data.target.id}`
+          
+          //get node id => ex. 31
+          let id = data.target.attributes.node_id.value;
 
-            //NODE ID SHOULD NEVER BE ZERO
-            let origin = this.state.origin.id;
-            let destination = this.state.destination.id;
-            // console.log("For testing", origin, typeof origin, destination, id, typeof id, id === origin)
-            
-            if(!origin) { //if origin doesn't exist => make the clicked node origin
-              this.onClickOrigin(id);
-            } else if(origin && !destination && id != origin) { //if origin exist & destination doesn't exist and if the destination is not equal to origin
-              this.onClickDestination(id);
-            } else { //if both origin & destination exist ignore it
-            }
+          //NODE ID SHOULD NEVER BE ZERO
+          let origin = this.state.origin.id;
+          let destination = this.state.destination.id;
+          // console.log("For testing", origin, typeof origin, destination, id, typeof id, id === origin)
+          
+          if(!origin) { //if origin doesn't exist => make the clicked node origin
+            this.onClickOrigin(id);
+          } else if(origin && !destination && id != origin) { //if origin exist & destination doesn't exist and if the destination is not equal to origin
+            this.onClickDestination(id);
+          } else { //if both origin & destination exist ignore it
+          }
         });
     }
 
   }
 
   createConnections() {
-    let svg = d3.select("#svg-graph");
+    let connectionContainer = d3.select(".connection-container");
 
     for(let id in intersectional_connection_data) {
       var connection = intersectional_connection_data[id];
       
-      d3.select("#svg-graph")
+      connectionContainer
       .append('line')
       .style("stroke", "black")
       .style("stroke-width", this.state.connection_size)
@@ -210,7 +173,7 @@ export default class Graph extends Component {
 
   onClickOrigin(id) {
     let node = intersectional_node_data[id]
-    d3.select("#node-container")
+    d3.select(".node-container")
       .append("circle")
       .attr("id", "node-origin")
       .attr("r", this.state.node_size * 2)
@@ -225,7 +188,7 @@ export default class Graph extends Component {
 
   onClickDestination(id) {
     let node = intersectional_node_data[id]
-    d3.select("#node-container")
+    d3.select(".node-container")
       .append("circle")
       .attr("id", "node-destination")
       .attr("r",  this.state.node_size * 2)
@@ -240,42 +203,49 @@ export default class Graph extends Component {
     this.findShortestPath(id);
   }
 
-  findShortestPath(id) {
+  findShortestPath(id) { //find the shortest path for all algoritm
     let origin = this.state.origin;
     
-    // console.log(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data)
     let pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    // let pathNodes = dijkstra.shortest(origin.id, destination.id, intersectional_node_data, intersectional_connection_data);
+    this.createPathNodes(pathNodes, "sloppyDijkstra", "purple");
 
-    this.createPathNodes(pathNodes);
+    pathNodes = byDistance.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    this.createPathNodes(pathNodes, "byDistance", "red");   
+    
+    pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    this.createPathNodes(pathNodes, "dijkstra", "blue");    
+
   }
 
-  createPathNodes(pathNodes) {
-    let pathContainer = d3.select("#svg-graph").append("g").attr("id", "path-container");
+  createPathNodes(pathNodes, algorithm, color) {
+    let pathContainer = d3.select(`#${algorithm}`)
+      .append("g")
+      .attr("class", "path-container");
 
     pathNodes.forEach((node) => {
       let id = node.id;
       pathContainer.append("circle")
-        .attr("id", `path-node-${node.id}`)
+        .attr("id", `path-node-${algorithm}-${node.id}`)
         .attr("node_id", id)
         .attr("class", "path-node")
         .attr("cx", node.x + this.margin.left)
         .attr("cy", node.y + this.margin.top)
         .attr("r",  this.state.node_size * 1.5)
-        .style("fill", "blue")
+        .style("fill", color)
     })
   }
 
-  // runBruteForceAlgorthim() {
-  //   let origin = this.state.origin;
-  //   let destination = this.state.destination;
-
-  //   route_algorithms.brute_force(origin, destination, intersectional_node_data, intersectional_connection_data);
-  // }
-
   render() {
+    let current = this.props.current;
+
     return (
-      <svg id="svg-graph" ref={this.wrapperRef}/>
+      <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.wrapperRef}>
+        <g className="connection-container"/>
+        <g className="node-container"/>
+        <g id="dijkstra" className={current === "dijkstra" ? "" : "hidden"}/>
+        <g id="sloppyDijkstra" className={current === "sloppyDijkstra" ? "" : "hidden"}/>
+        <g id="byDistance" className={current === "byDistance" ? "" : "hidden"}/>
+      </svg>
     )
   }
 }

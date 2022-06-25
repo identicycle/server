@@ -1,0 +1,36 @@
+.selection {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selection .card {
+  display: flex;
+  width: 90%;
+  height: 18vh;
+  margin: 1vh;
+  padding: 1vh;
+  border-radius: 1vh;
+  justify-content: center;
+  border: 1px black solid;
+}
+
+.card-title {
+  display: flex;
+  width: 100%;
+  height: 4vh;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1vh;
+  font-size: x-large;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: blue;
+}
+
+.selected {
+  width: 92% !important;
+  height: 19vh !important;
+}
