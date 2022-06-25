@@ -16,11 +16,9 @@ export default class App extends Component {
     super(props);
     this.state = {
       algorithm: "dijkstra",
-      times: {
-        sloppyDijkstra: 0,
-        dijkstra: 0,
-        byDistance: 0
-      }
+      sloppyDijkstraTime: 0,
+      dijkstraTime: 0,
+      byDistanceTime: 0
     }
 
     //for reset function
@@ -36,7 +34,7 @@ export default class App extends Component {
   }
 
   updatePerformanceTimes(times) {
-    this.setState({time: times})
+    this.setState(times)
   }
 
   render() {
@@ -50,12 +48,15 @@ export default class App extends Component {
         <div className='app-container'>
           <div id="svg-graph-container">
             <Graph current={this.state.algorithm} 
-              times={this.state.times} updatePerformanceTimes={this.updatePerformanceTimes}
+              updatePerformanceTimes={this.updatePerformanceTimes}
               graphRef={this.graphRef} selectionRef={this.selectionRef}/>
           </div>
           <div className='selection-container'>
             <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent} 
-              times={this.state.times} wrapperRef={this.selectionRef}/>
+              sloppyDijkstraTime={this.state.sloppyDijkstraTime}
+              dijkstraTime={this.state.dijkstraTime}
+              byDistanceTime={this.state.byDistanceTime}
+              wrapperRef={this.selectionRef}/>
           </div>
         </div>
       </div>

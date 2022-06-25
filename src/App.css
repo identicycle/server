@@ -37,3 +37,18 @@
   padding-top: 2vh;
   background-color: pink;
 }
+
+.dijkstra {
+  fill: blue;
+  background-color: blue;
+}
+
+.sloppyDijkstra {
+  fill: purple;
+  background-color: purple;
+}
+
+.byDistance {
+  fill: red;
+  background-color: red;
+}

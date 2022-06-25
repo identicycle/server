@@ -17,13 +17,13 @@ export default class Selection extends Component {
       <div className="selection" ref={this.props.wrapperRef}>
         <SelectCard title="Dijkstra" algorithm="dijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.times.dijkstra}/>
+          time={this.props.sloppyDijkstraTime}/>
         <SelectCard title="Sloppy Dijkstra" algorithm="sloppyDijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.times.sloppyDijkstra}/>
+          time={this.props.dijkstraTime}/>
         <SelectCard title="By Distance" algorithm="byDistance" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.times.byDistance}/>
+          time={this.props.byDistanceTime}/>
       </div>
     );
   }

@@ -242,26 +242,26 @@ export default class Graph extends Component {
     pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     this.createPathNodes(pathNodes, "sloppyDijkstra", "purple");
     endTime = new Date().getTime();
-    times.sloppyDijkstra = endTime - startTime;
+    times.sloppyDijkstraTime = endTime - startTime;
 
     startTime = new Date().getTime();
     pathNodes = byDistance.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     this.createPathNodes(pathNodes, "byDistance", "red");   
     endTime = new Date().getTime();
-    times.dijkstra = endTime - startTime;
+    times.byDistanceTime = endTime - startTime;
     
     startTime = new Date().getTime();
     pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     this.createPathNodes(pathNodes, "dijkstra", "blue");  
     endTime = new Date().getTime();
-    times.byDistance = endTime - startTime; 
+    times.dijkstraTime = endTime - startTime; 
 
     console.log(times)
     this.props.updatePerformanceTimes(times);
   }
 
-  createPathNodes(pathNodes, algorithm, color) {
-    let pathContainer = d3.select(`#${algorithm}`)
+  createPathNodes(pathNodes, algorithm) {
+    let pathContainer = d3.select(`.${algorithm}`)
       .append("g")
       .attr("class", "path-container");
 
@@ -274,7 +274,7 @@ export default class Graph extends Component {
         .attr("cx", node.x + this.margin.left)
         .attr("cy", node.y + this.margin.top)
         .attr("r",  this.state.node_size * 1.5)
-        .style("fill", color)
+        // .style("fill", color)
     })
   }
 
@@ -285,11 +285,11 @@ export default class Graph extends Component {
       <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>
         <g className="connection-container"/>
         <g className="node-container"/>
-        <g id="dijkstra" className={current === "dijkstra" ? "" : "hidden"}
+        <g className= {`dijkstra ${current === "dijkstra" ? "" : "hidden"}`}
           pointerEvents="none"/>
-        <g id="sloppyDijkstra" className={current === "sloppyDijkstra" ? "" : "hidden"}
+        <g className= {`sloppyDijkstra ${current === "sloppyDijkstra" ? "" : "hidden"}`}
           pointerEvents="none"/>
-        <g id="byDistance" className={current === "byDistance" ? "" : "hidden"}
+        <g className= {`byDistance ${current === "byDistance" ? "" : "hidden"}`}
           pointerEvents="none"/>
       </svg>
     )

@@ -15,7 +15,8 @@ module.exports = {
   //for byDistance algorithm, find all nodes connected to given nodeID
   getAllConnectedNodes: (nodeID, connections) => {
     let connectedNodes = [];
-    let newConnections = connections.filter((connection) => {
+    // let newConnections = 
+    connections.forEach((connection) => {
       if(connection.c1_id == nodeID) {
         connectedNodes.push(connection.c2_node);
         return 0;
@@ -26,9 +27,6 @@ module.exports = {
       return 1;
     });
     
-    return {
-      newConnections,
-      connectedNodes
-    };
+    return connectedNodes;
   }
 }
