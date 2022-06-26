@@ -87,6 +87,10 @@ export default class Graph extends Component {
       //remove path nodes
       d3.selectAll(".path-container").remove();
 
+      //set destination node to proper size because it doesn't turn back automatically for some reason
+      d3.select(`#intersectional-node-${this.state.destination.id}`)
+        .attr("r", this.state.node_size);
+
       //reset origin & destination
       this.setState({
         origin: {
@@ -108,6 +112,7 @@ export default class Graph extends Component {
         dijkstraTime: 0,
         bruteForceTime: 0
       });
+
     }
   }
 
