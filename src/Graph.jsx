@@ -98,7 +98,15 @@ export default class Graph extends Component {
           x: 1000,
           y: 600
         }
-      })
+      });
+
+      //set performance time to o
+      this.props.updatePerformance({
+        byDistanceTime: 0,
+        sloppyDijkstraTime: 0,
+        dijkstraTime: 0,
+        bruteForceTime: 0
+      });
     }
   }
 
@@ -159,12 +167,16 @@ export default class Graph extends Component {
         .attr("r",  this.state.node_size)
         .style("fill", "black")
         .on('mouseover', () => { //on hover make the node bigger
-          d3.select(`#intersectional-node-${id}`)
-            .attr("r", this.state.node_size * 1.2)
+          if(!this.state.destination.id){ //disable when path is shown
+            d3.select(`#intersectional-node-${id}`)
+              .attr("r", this.state.node_size * 1.2)
+          }
         })
         .on('mouseout', () => { //when mouse stops hovering change the node size back to normal
-          d3.select(`#intersectional-node-${id}`)
-            .attr("r", this.state.node_size)
+          if(!this.state.destination.id){ //disable when path is shown
+            d3.select(`#intersectional-node-${id}`)
+              .attr("r", this.state.node_size)
+          }
         })
         .on('click', () => {
           //id of clicked node => ex. intersectional-node-31
@@ -259,7 +271,7 @@ export default class Graph extends Component {
     this.createPathNodes(pathNodes, "dijkstra");  
     times.dijkstraTime = endTime - startTime; 
 
-    this.props.updatePerformanceTimes(times);
+    this.props.updatePerformance(times);
 
     // startTime = new Date().getTime();
     // pathNodes = bruteForce.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
@@ -296,23 +308,72 @@ export default class Graph extends Component {
     })
   }
 
+  getDistance(startID, endID) { //optimize later
+    if(this.gx[startID][endID]) {
+      return this.gx[startID][endID];
+    } else if(this.gx[endID][startID]) {
+      return this.gx[endID][startID];
+    } else {
+      console.log("connection NOT FOUND");
+      return 0;
+    }
+  }
+
   checkPerformance() {
-    let test;
-    let overallTimes = {}
+    let test, result;
+    let overallTimes = {};
+    let allPaths = {};
     console.log("checking Performance")
+    //check time performance
     let id_list = Object.keys(intersectional_node_data);
 
     test = (originID, destinationID) => byDistance.shortest(originID, destinationID, intersectional_node_data, intersectional_connection_data, this.gx);
-    overallTimes.overallByDistanceTime = performance.checkTime(test, id_list);
+    result = performance.checkTime(test, id_list);
+    overallTimes.overallByDistanceTime = result.time;
+    allPaths.byDistance = result.paths;
 
     test = (originID, destinationID) => sloppyDijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    overallTimes.overallSloppyDijkstraTime = performance.checkTime(test, id_list);
+    result = performance.checkTime(test, id_list);
+    overallTimes.overallSloppyDijkstraTime = result.time;
+    allPaths.sloppyDijkstra = result.paths;
 
     test = (originID, destinationID) => dijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    overallTimes.overallDijkstraTime = performance.checkTime(test, id_list);
+    result = performance.checkTime(test, id_list);
+    overallTimes.overallDijkstraTime = result.time;
+    allPaths.dijkstra = result.paths;
 
-    console.log("done")
+    console.log("time done")
     this.props.stopPerformanceCheck(overallTimes);
+
+    //check accuracy distance as standard
+    let originId = id_list[0];
+    let accuracies = {};
+    let standardDistance = 0;
+    for(let id of id_list) { //add all distance from origin to every node to compare with algorithm
+      standardDistance += this.getDistance(originId, id);
+    }
+
+    for(let algorithm in allPaths) { //check every algorithm
+      let paths = allPaths[algorithm][originId];
+      let distance = 0;
+
+      for(let destinationId in paths) { //check for every destination
+        let path = paths[destinationId]
+        path.forEach((node, i) => { //sum all weight to get ditance
+          //skip first
+          if(i === 0) return;
+
+          let previous = path[i-1];
+          distance += this.getDistance(previous.id, node.id);
+        });
+      }
+
+      //compare the result with standard Distance
+      accuracies[`${algorithm}Accuracy`] = 100 + Math.round((standardDistance - distance)/ standardDistance * 1000) / 10;
+
+    }
+
+    this.props.updatePerformance(accuracies)
   }
 
   render() {

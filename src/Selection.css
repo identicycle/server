@@ -2,19 +2,22 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  align-items: center;
 }
 
 .selection .card {
   display: flex;
   width: 90%;
   height: 18vh;
-  margin: 1vh;
+  margin-top: 1vh;
   padding: 1vh;
-  border-radius: 1vh;
+  border-top-right-radius: 1vh;
+  border-bottom-right-radius: 1vh;
   flex-direction: column;
   align-items: center;
-  border: 1px black solid;
+  border: 2px #c3cac7 solid;
+  border-left: 0;
+  background-color: #c3cac7;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .card-title {
@@ -27,10 +30,18 @@
   font-size: x-large;
   font-weight: 600;
   color: #ffffff;
-  background-color: blue;
+  margin-top:1vh;
+  margin-bottom: 1vh;
+  /* background-color: blue; */
+}
+
+.card-content {
+  font-size: large;
 }
 
 .selected {
   width: 92% !important;
   height: 19vh !important;
+  background-color: #5cb8b2 !important;
+  box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px !important;
 }

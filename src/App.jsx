@@ -24,6 +24,10 @@ export default class App extends Component {
       overallDijkstraTime: 0,
       overallSloppyDijkstraTime: 0,
       overallByDistanceTime: 0,
+      bruteForceAccuracy: 0,
+      dijkstraAccuracy: 0,
+      sloppyDijkstraAccuracy: 0,
+      byDistanceAccuracy: 0,
       checkingPerformance: false
     }
 
@@ -32,17 +36,21 @@ export default class App extends Component {
     this.selectionRef = React.createRef(); 
 
     this.switchCurrent = this.switchCurrent.bind(this);
-    this.updatePerformanceTimes = this.updatePerformanceTimes.bind(this);
+    this.updatePerformance = this.updatePerformance.bind(this);
     this.startPerformanceCheck = this.startPerformanceCheck.bind(this);
     this.stopPerformanceCheck = this.stopPerformanceCheck.bind(this);
+  }
+
+  componentDidMount(){
+    this.startPerformanceCheck();
   }
 
   switchCurrent(algorithm) { //switch to different algorithm
     this.setState({algorithm: algorithm});
   }
 
-  updatePerformanceTimes(times) {
-    this.setState(times)
+  updatePerformance(obj) {
+    this.setState(obj)
   }
 
   startPerformanceCheck() {
@@ -54,20 +62,21 @@ export default class App extends Component {
     this.setState(overallTimes);
   }
 
+
   render() {
     console.log(this.state.byDistanceTime)
     return (
       <div className="App">
-        <header className="App-header">
-          <h3>
-            Routing Algorithm Testing Ground
-          </h3>
-        </header>
         <div className='app-container'>
           <div id="svg-graph-container">
+            <header className="App-header">
+              <h3>
+                Routing Algorithm Testing Ground
+              </h3>
+            </header>
             <Graph current={this.state.algorithm} 
-              updatePerformanceTimes={this.updatePerformanceTimes}
-              checkingPerformance={this.state.checkingPerformance} 
+              updatePerformance={this.updatePerformance}
+              checkingPerformance={this.state.checkingPerformance}
               stopPerformanceCheck={this.stopPerformanceCheck}
               graphRef={this.graphRef} selectionRef={this.selectionRef}/>
           </div>
@@ -81,6 +90,10 @@ export default class App extends Component {
               overallDijkstraTime={this.state.overallDijkstraTime}
               overallSloppyDijkstraTime={this.state.overallSloppyDijkstraTime}
               overallByDistanceTime={this.state.overallByDistanceTime}
+              bruteForceAccuracy={this.state.bruteForceAccuracy}
+              dijkstraAccuracy={this.state.dijkstraAccuracy}
+              sloppyDijkstraAccuracy={this.state.sloppyDijkstraAccuracy}
+              byDistanceAccuracy={this.state.byDistanceAccuracy}
               checkingPerformance={this.state.checkingPerformance} 
               startPerformanceCheck={this.startPerformanceCheck}
               wrapperRef={this.selectionRef}/>
