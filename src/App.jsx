@@ -2,11 +2,12 @@
 import React, {Component} from 'react';
 
 //Library
-import * as d3 from "d3";
+import { isMobile } from 'react-device-detect';
 
 //Components
 import Graph from './Graph';
 import Selection from './Selection';
+import SelectCardContent from './SelectCardContent';
 
 //CSS
 import './App.css';
@@ -15,6 +16,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      width: 100,
+      height: 100,
       algorithm: "sloppyDijkstra",
       bruteForceTime: 0,
       dijkstraTime: 0,
@@ -42,6 +45,10 @@ export default class App extends Component {
   }
 
   componentDidMount(){
+    if(isMobile) {
+      this.resizeMobile();
+      window.removeEventListener("resize", this.resizeMobile);
+    }
     this.startPerformanceCheck();
   }
 
@@ -62,13 +69,19 @@ export default class App extends Component {
     this.setState(overallTimes);
   }
 
+  resizeMobile() {
+    let { innerWidth: width, innerHeight: height } = window;
+    this.setState({width, height});
+  }
 
   render() {
-    console.log(this.state.byDistanceTime)
+    let algorithm = this.state.algorithm;
+
     return (
-      <div className="App">
-        <div className='app-container'>
-          <div id="svg-graph-container">
+      <div className={`App ${isMobile ? "mobile" : "browser"}`} 
+        style={isMobile && {width: this.state.width, height: this.state.height}}>
+        <div className={`app-container ${isMobile ? "mobile" : "browser"}`}>
+          <div id="svg-graph-container" className={isMobile ? "mobile" : "browser"}>
             <header className="App-header">
               <h3>
                 Routing Algorithm Testing Ground
@@ -79,8 +92,13 @@ export default class App extends Component {
               checkingPerformance={this.state.checkingPerformance}
               stopPerformanceCheck={this.stopPerformanceCheck}
               graphRef={this.graphRef} selectionRef={this.selectionRef}/>
+            { isMobile &&
+            <SelectCardContent 
+              time={this.state[`${algorithm}Time`]} 
+              overallTime={this.state[`overall${algorithm[0].toUpperCase() + algorithm.slice(1)}Time`]}
+              accuracy={this.state[`${algorithm}Accuracy`]}/>}
           </div>
-          <div className='selection-container'>
+          <div className={`selection-container ${isMobile ? "mobile" : "browser"}`}>
             <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent}
               bruteForceTime={this.state.bruteForceTime}
               dijkstraTime={this.state.dijkstraTime}

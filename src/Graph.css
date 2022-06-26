@@ -3,8 +3,16 @@
   height: 100%; */
   width: 30vwmin;
   height: 30vhmin;
+}
+
+#svg-graph.browser {
   max-width: 80%;
   max-height: 80%;
+}
+
+#svg-graph.mobile {
+  max-width: 90%;
+  max-height: 90%;
 }
 
 .path-container{

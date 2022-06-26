@@ -3,6 +3,7 @@ import React, { Component }  from 'react';
 
 //Library
 import * as d3 from "d3";
+import { isMobile } from 'react-device-detect';
 
 //CSS
 import "./Graph.css";
@@ -167,13 +168,13 @@ export default class Graph extends Component {
         .attr("r",  this.state.node_size)
         .style("fill", "black")
         .on('mouseover', () => { //on hover make the node bigger
-          if(!this.state.destination.id){ //disable when path is shown
+          if(!this.state.destination.id || isMobile){ //disable when path is shown & mobile
             d3.select(`#intersectional-node-${id}`)
               .attr("r", this.state.node_size * 1.2)
           }
         })
         .on('mouseout', () => { //when mouse stops hovering change the node size back to normal
-          if(!this.state.destination.id){ //disable when path is shown
+          if(!this.state.destination.id || isMobile){ //disable when path is shown & mobile
             d3.select(`#intersectional-node-${id}`)
               .attr("r", this.state.node_size)
           }
@@ -382,7 +383,8 @@ export default class Graph extends Component {
     if(this.props.checkingPerformance) this.checkPerformance();
 
     return (
-      <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>
+      <svg id="svg-graph" className={isMobile ? "mobile" : "browser"}
+        preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>
         <g className="connection-container"/>
         <g className="node-container"/>
         <g className= {`bruteForce ${current === "bruteForce" ? "" : "hidden"}`}

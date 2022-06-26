@@ -1,6 +1,9 @@
 //React
 import React, {Component} from 'react';
 
+//Library
+import { isMobile } from 'react-device-detect';
+
 //Components
 import SelectCard from './SelectCard';
 
@@ -14,7 +17,7 @@ export default class Selection extends Component {
   
   render() {
     return (
-      <div className="selection" ref={this.props.wrapperRef}>
+      <div className={`selection ${isMobile ? "mobile" : "browser"}`} ref={this.props.wrapperRef}>
         <SelectCard title="By Distance" algorithm="byDistance" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
           time={this.props.byDistanceTime} overallTime={this.props.overallByDistanceTime}
