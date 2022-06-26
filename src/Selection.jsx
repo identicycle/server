@@ -31,9 +31,6 @@ export default class Selection extends Component {
           current={this.props.current} switchCurrent={this.props.switchCurrent}
           time={this.props.bruteForceTime} overallTime={this.props.overallBruteForceTime}
           accuracy={this.props.bruteForceAccuracy}/> */}
-        <button onClick={this.props.startPerformanceCheck}>
-          Check Performance
-        </button>
       </div>
     );
   }

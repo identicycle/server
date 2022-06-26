@@ -94,8 +94,7 @@ export default class App extends Component {
               dijkstraAccuracy={this.state.dijkstraAccuracy}
               sloppyDijkstraAccuracy={this.state.sloppyDijkstraAccuracy}
               byDistanceAccuracy={this.state.byDistanceAccuracy}
-              checkingPerformance={this.state.checkingPerformance} 
-              startPerformanceCheck={this.startPerformanceCheck}
+              checkingPerformance={this.state.checkingPerformance}
               wrapperRef={this.selectionRef}/>
           </div>
         </div>
