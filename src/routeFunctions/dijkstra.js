@@ -1,5 +1,5 @@
-const ind = require('../sample_datas/ind');
-const icd = require('../sample_datas/icd');
+// const ind = require('../sample_data/ind');
+// const icd = require('../sample_data/icd');
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {

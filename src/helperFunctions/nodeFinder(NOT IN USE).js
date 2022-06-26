@@ -1,4 +1,4 @@
-import nodes_between_intersections_data from '../sample_datas/nodes_between_two_intersectional_nodes';
+import nodes_between_intersections_data from '../sample_data/nodes_between_two_intersectional_nodes';
 
 module.exports = {
 //Before getting the path using the algorithm

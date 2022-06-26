@@ -33,9 +33,12 @@
 
 .selection-container {
   width: 30%;
-  height: 100%;
-  padding-top: 2vh;
   background-color: pink;
+}
+
+.bruteForce {
+  fill: grey;
+  background-color: grey;
 }
 
 .dijkstra {

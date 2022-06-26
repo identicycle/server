@@ -12,11 +12,10 @@ module.exports = {
     });
     return closestNode;
   },
-  //for byDistance algorithm, find all nodes connected to given nodeID
+  //for Brute Force, find all nodes connected to given nodeID & delete the connections from all connections
   getAllConnectedNodes: (nodeID, connections) => {
     let connectedNodes = [];
-    // let newConnections = 
-    connections.forEach((connection) => {
+    let newConnections = connections.filter((connection) => {
       if(connection.c1_id == nodeID) {
         connectedNodes.push(connection.c2_node);
         return 0;
@@ -27,6 +26,9 @@ module.exports = {
       return 1;
     });
     
-    return connectedNodes;
+    return {
+      connectedNodes,
+      newConnections
+    };
   }
 }

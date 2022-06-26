@@ -9,6 +9,7 @@ import "./Graph.css";
 
 //Algorithms
 import data_analysis from './helperFunctions/dataAnalysis';
+import bruteForce from './routeFunctions/bruteForce';
 import dijkstra from './routeFunctions/dijkstra';
 import sloppyDijkstra from './routeFunctions/sloppyDijkstra';
 import byDistance from './routeFunctions/byDistance';
@@ -18,8 +19,8 @@ import gxCalculation from './routeFunctions/gxCalculation';
 
 //Sample Data
 //NODE ID SHOULD NEVER BE ZERO
-import intersectional_node_data from './sample_datas/ind';
-import intersectional_connection_data from './sample_datas/icd';
+import intersectional_node_data from './sample_data/ind';
+import intersectional_connection_data from './sample_data/icd';
 
 export default class Graph extends Component {
   constructor(props) {
@@ -239,25 +240,32 @@ export default class Graph extends Component {
     let times = {}
 
     startTime = new Date().getTime();
-    pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "sloppyDijkstra", "purple");
-    endTime = new Date().getTime();
-    times.sloppyDijkstraTime = endTime - startTime;
-
-    startTime = new Date().getTime();
-    pathNodes = byDistance.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "byDistance", "red");   
+    pathNodes = byDistance.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
+    this.createPathNodes(pathNodes, "byDistance");   
     endTime = new Date().getTime();
     times.byDistanceTime = endTime - startTime;
+
+    startTime = new Date().getTime();
+    pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    this.createPathNodes(pathNodes, "sloppyDijkstra");
+    endTime = new Date().getTime();
+    times.sloppyDijkstraTime = endTime - startTime;
     
     startTime = new Date().getTime();
     pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "dijkstra", "blue");  
+    this.createPathNodes(pathNodes, "dijkstra");  
     endTime = new Date().getTime();
     times.dijkstraTime = endTime - startTime; 
 
-    console.log(times)
     this.props.updatePerformanceTimes(times);
+
+    startTime = new Date().getTime();
+    pathNodes = bruteForce.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
+    this.createPathNodes(pathNodes, "bruteForce");  
+    endTime = new Date().getTime();
+    let bruteForceTime = endTime - startTime; 
+
+    this.props.updatePerformanceTimes({bruteForceTime: bruteForceTime});
   }
 
   createPathNodes(pathNodes, algorithm) {
@@ -274,7 +282,15 @@ export default class Graph extends Component {
         .attr("cx", node.x + this.margin.left)
         .attr("cy", node.y + this.margin.top)
         .attr("r",  this.state.node_size * 1.5)
-        // .style("fill", color)
+      
+      //for test purpose show node ids
+      pathContainer.append("text")
+        .attr("id", `path-node-text-${algorithm}-${node.id}`)
+        .text(id)
+        .attr("x", node.x + this.margin.left)
+        .attr("y", node.y + this.margin.top)
+        .style("fill", "white")
+        .style("font-size", "2px")
     })
   }
 
@@ -285,6 +301,8 @@ export default class Graph extends Component {
       <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>
         <g className="connection-container"/>
         <g className="node-container"/>
+        <g className= {`bruteForce ${current === "bruteForce" ? "" : "hidden"}`}
+          pointerEvents="none"/>
         <g className= {`dijkstra ${current === "dijkstra" ? "" : "hidden"}`}
           pointerEvents="none"/>
         <g className= {`sloppyDijkstra ${current === "sloppyDijkstra" ? "" : "hidden"}`}

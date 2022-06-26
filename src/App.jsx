@@ -16,8 +16,9 @@ export default class App extends Component {
     super(props);
     this.state = {
       algorithm: "dijkstra",
-      sloppyDijkstraTime: 0,
+      bruteForceTime: 0,
       dijkstraTime: 0,
+      sloppyDijkstraTime: 0,
       byDistanceTime: 0
     }
 
@@ -52,9 +53,10 @@ export default class App extends Component {
               graphRef={this.graphRef} selectionRef={this.selectionRef}/>
           </div>
           <div className='selection-container'>
-            <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent} 
-              sloppyDijkstraTime={this.state.sloppyDijkstraTime}
+            <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent}
+              bruteForceTime={this.state.bruteForceTime}
               dijkstraTime={this.state.dijkstraTime}
+              sloppyDijkstraTime={this.state.sloppyDijkstraTime}
               byDistanceTime={this.state.byDistanceTime}
               wrapperRef={this.selectionRef}/>
           </div>

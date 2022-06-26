@@ -56,7 +56,7 @@ def nodeGen(idd, node):
     return '{id:'+str(node[idd][0]+1)+", x:"+str(node[idd][1])+', y:'+str(node[idd][2])+"}"
 
 def makeFile(data):
-    with open("ind.js", 'w+') as f:
+    with open("./src/sample_data/ind.js", 'w+') as f:
         f.write("module.exports = {\n")
         length = len(data[0])
         for i in range(length):
@@ -68,7 +68,7 @@ def makeFile(data):
                 f.write(',')
             f.write('\n')
         f.write('}')
-    with open("icd.js", 'w+') as f:
+    with open("./src/sample_data/icd.js", 'w+') as f:
         f.write("module.exports = [\n")
         length = len(data[1])
         idx = 1
@@ -82,5 +82,5 @@ def makeFile(data):
             f.write('\n')
             idx+=1
         f.write(']')
-makeFile(generate(30))
+makeFile(generate(10))
             
