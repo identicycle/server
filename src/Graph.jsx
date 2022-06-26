@@ -17,6 +17,8 @@ import byDistance from './routeFunctions/byDistance';
 
 import gxCalculation from './routeFunctions/gxCalculation';
 
+import performance from './routeFunctions/performance';
+
 //Sample Data
 //NODE ID SHOULD NEVER BE ZERO
 import intersectional_node_data from './sample_data/ind';
@@ -241,31 +243,31 @@ export default class Graph extends Component {
 
     startTime = new Date().getTime();
     pathNodes = byDistance.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "byDistance");   
     endTime = new Date().getTime();
+    this.createPathNodes(pathNodes, "byDistance");   
     times.byDistanceTime = endTime - startTime;
 
     startTime = new Date().getTime();
     pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "sloppyDijkstra");
     endTime = new Date().getTime();
+    this.createPathNodes(pathNodes, "sloppyDijkstra");
     times.sloppyDijkstraTime = endTime - startTime;
     
     startTime = new Date().getTime();
     pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "dijkstra");  
     endTime = new Date().getTime();
+    this.createPathNodes(pathNodes, "dijkstra");  
     times.dijkstraTime = endTime - startTime; 
 
     this.props.updatePerformanceTimes(times);
 
-    startTime = new Date().getTime();
-    pathNodes = bruteForce.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
-    this.createPathNodes(pathNodes, "bruteForce");  
-    endTime = new Date().getTime();
-    let bruteForceTime = endTime - startTime; 
+    // startTime = new Date().getTime();
+    // pathNodes = bruteForce.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
+    // endTime = new Date().getTime();
+    // this.createPathNodes(pathNodes, "bruteForce");  
+    // let bruteForceTime = endTime - startTime; 
 
-    this.props.updatePerformanceTimes({bruteForceTime: bruteForceTime});
+    // this.props.updatePerformanceTimes({bruteForceTime: bruteForceTime});
   }
 
   createPathNodes(pathNodes, algorithm) {
@@ -284,18 +286,39 @@ export default class Graph extends Component {
         .attr("r",  this.state.node_size * 1.5)
       
       //for test purpose show node ids
-      pathContainer.append("text")
-        .attr("id", `path-node-text-${algorithm}-${node.id}`)
-        .text(id)
-        .attr("x", node.x + this.margin.left)
-        .attr("y", node.y + this.margin.top)
-        .style("fill", "white")
-        .style("font-size", "2px")
+      // pathContainer.append("text")
+      //   .attr("id", `path-node-text-${algorithm}-${node.id}`)
+      //   .text(id)
+      //   .attr("x", node.x + this.margin.left)
+      //   .attr("y", node.y + this.margin.top)
+      //   .style("fill", "white")
+      //   .style("font-size", "2px")
     })
+  }
+
+  checkPerformance() {
+    let test;
+    let overallTimes = {}
+    console.log("checking Performance")
+    let id_list = Object.keys(intersectional_node_data);
+
+    test = (originID, destinationID) => byDistance.shortest(originID, destinationID, intersectional_node_data, intersectional_connection_data, this.gx);
+    overallTimes.overallByDistanceTime = performance.checkTime(test, id_list);
+
+    test = (originID, destinationID) => sloppyDijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    overallTimes.overallSloppyDijkstraTime = performance.checkTime(test, id_list);
+
+    test = (originID, destinationID) => dijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    overallTimes.overallDijkstraTime = performance.checkTime(test, id_list);
+
+    console.log("done")
+    this.props.stopPerformanceCheck(overallTimes);
   }
 
   render() {
     let current = this.props.current;
+
+    if(this.props.checkingPerformance) this.checkPerformance();
 
     return (
       <svg id="svg-graph" preserveAspectRatio="xMidYMid meet" ref={this.props.graphRef}>

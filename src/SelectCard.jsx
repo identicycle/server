@@ -15,7 +15,8 @@ export default class SelectCard extends Component {
         onClick={() => this.props.switchCurrent(this.algorithm)}>
         <div className={`card-title ${this.algorithm}`}>{this.title}</div>
         <div>
-          <div>Time: {this.props.time}</div>
+          <div>Time: {this.props.time} ms</div>
+          <div>Overall Time: {this.props.overallTime} ms</div>
         </div>
       </div>
     );

@@ -17,16 +17,19 @@ export default class Selection extends Component {
       <div className="selection" ref={this.props.wrapperRef}>
         <SelectCard title="By Distance" algorithm="byDistance" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.byDistanceTime}/>
+          time={this.props.byDistanceTime} overallTime={this.props.overallByDistanceTime}/>
         <SelectCard title="Sloppy Dijkstra" algorithm="sloppyDijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.sloppyDijkstraTime}/>
+          time={this.props.sloppyDijkstraTime} overallTime={this.props.overallSloppyDijkstraTime}/>
         <SelectCard title="Dijkstra" algorithm="dijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.dijkstraTime}/>
-        <SelectCard title="Brute Force" algorithm="bruteForce" 
+          time={this.props.dijkstraTime} overallTime={this.props.overallDijkstraTime}/>
+        {/* <SelectCard title="Brute Force" algorithm="bruteForce" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.bruteForceTime}/>
+          time={this.props.bruteForceTime}/> */}
+        <button onClick={this.props.startPerformanceCheck}>
+          Check Performance
+        </button>
       </div>
     );
   }
