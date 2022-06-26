@@ -79,7 +79,7 @@ export default class App extends Component {
 
     return (
       <div className={`App ${isMobile ? "mobile" : "browser"}`} 
-        style={isMobile && {width: this.state.width, height: this.state.height}}>
+        style={isMobile ? {width: this.state.width, height: this.state.height} : {}}>
         <div className={`app-container ${isMobile ? "mobile" : "browser"}`}>
           <div id="svg-graph-container" className={isMobile ? "mobile" : "browser"}>
             <header className="App-header">
