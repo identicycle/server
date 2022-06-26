@@ -27,16 +27,20 @@
   justify-content: center;
   align-items: center;
   border-radius: 1vh;
-  font-size: x-large;
   font-weight: 600;
   color: #ffffff;
   margin-top:1vh;
   margin-bottom: 1vh;
   /* background-color: blue; */
 }
-
+ 
 .card-content {
-  font-size: large;
+  margin-top: 1vh;
+}
+
+h6 {
+  font-weight: 400;
+  margin: 0;
 }
 
 .selected {

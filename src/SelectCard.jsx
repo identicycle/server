@@ -13,11 +13,11 @@ export default class SelectCard extends Component {
       <div 
         className={`select card ${this.props.current === this.algorithm ? "selected" : ""}`} onMouseOver={() => this.props.switchCurrent(this.algorithm)} 
         onClick={() => this.props.switchCurrent(this.algorithm)}>
-        <div className={`card-title ${this.algorithm}`}>{this.title}</div>
+        <h4 className={`card-title ${this.algorithm}`}>{this.title}</h4>
         <div className='card-content'>
-          <div>Time: {this.props.time} ms</div>
-          <div>Overall Time: {this.props.overallTime} ms</div>
-          <div>Accuracy: {this.props.accuracy}%</div>
+          <h6>Time: {this.props.time} ms</h6>
+          <h6>Overall Time: {this.props.overallTime} ms</h6>
+          <h6>Accuracy: {this.props.accuracy}%</h6>
         </div>
       </div>
     );
