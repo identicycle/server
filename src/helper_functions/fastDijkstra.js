@@ -24,7 +24,8 @@ function shortestRoute(startID, endID, ind, icd) {
         routes[id] = {
             short: ((id != startID) ? bigNum : 0), 
             from: startID,
-            gx: (Math.abs(ind[id].x - ind[endID].x) + Math.abs(ind[id].y - ind[endID].y)) // Defined as rise + run as opposed to standard distance equation
+            gx: .7*(Math.abs(ind[id].x - ind[endID].x) + Math.abs(ind[id].y - ind[endID].y)) // Defined as (rise + run) * inverse root 2
+            //gx: Math.sqrt(Math.pow(Math.abs(ind[id].x - ind[endID].x), 2) + Math.pow(Math.abs(ind[id].y - ind[endID].y), 2))
         };
     }
 
