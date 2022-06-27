@@ -40,7 +40,7 @@ def generate(size = 100):
             for i in nodeAdj:
                 if i in already:
                     nodeAdj.remove(i)
-            for i in range(max(0, 3-len(already))):
+            for i in range(max(0, 2-len(already))):
                 edges.append([node[0], random.choice(nodeAdj), 10])
                 nodeAdj.remove(edges[-1][1])
     return [nodes, edges]
@@ -56,7 +56,7 @@ def nodeGen(idd, node):
     return '{id:'+str(node[idd][0]+1)+", x:"+str(node[idd][1])+', y:'+str(node[idd][2])+"}"
 
 def makeFile(data):
-    with open("ind.js", 'w+') as f:
+    with open("./src/sample_data/ind.js", 'w+') as f:
         f.write("module.exports = {\n")
         length = len(data[0])
         for i in range(length):
@@ -68,19 +68,19 @@ def makeFile(data):
                 f.write(',')
             f.write('\n')
         f.write('}')
-    with open("icd.js", 'w+') as f:
-        f.write("module.exports = {\n")
+    with open("./src/sample_data/icd.js", 'w+') as f:
+        f.write("module.exports = [\n")
         length = len(data[1])
         idx = 1
         for i in range(length):
             c1 = data[1][i][0]
             c2 = data[1][i][1]
             w = str(data[1][i][2])
-            f.write(str(idx)+': {c1_id: '+str(c1+1)+', c2_id: '+str(c2+1)+', c1_node: '+nodeGen(c1, data[0])+', c2_node: '+nodeGen(c2, data[0])+', weight:'+w+'}')
+            f.write('{c1_id: '+str(c1+1)+', c2_id: '+str(c2+1)+', c1_node: '+nodeGen(c1, data[0])+', c2_node: '+nodeGen(c2, data[0])+', weight:'+w+'}')
             if i != length-1:
                 f.write(',')
             f.write('\n')
             idx+=1
-        f.write('}')
+        f.write(']')
 makeFile(generate(30))
             

@@ -1,6 +1,3 @@
-const ind = require('../sample_datas/ind');
-const icd = require('../sample_datas/icd');
-
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
     var output = '-1';
@@ -12,10 +9,9 @@ function smallestShort(routes, checked) {
     return output
 }
 
-
 //Finds shortest route
-function shortestRoute(startID, endID, ind, icd) {
-    const bigNum = 99999999; //Arbitrarily large number
+function shortestRoute(startID, endID, ind, icd, gx) {
+    const bigNum = 4294967295; //Arbitrarily large number
     var routes = {}; //Stores the shortest route to each node found so far
     var checked = [startID]; //Stores all nodes already checked for routes
 
@@ -24,8 +20,7 @@ function shortestRoute(startID, endID, ind, icd) {
         routes[id] = {
             short: ((id != startID) ? bigNum : 0), 
             from: startID,
-            gx: .7*(Math.abs(ind[id].x - ind[endID].x) + Math.abs(ind[id].y - ind[endID].y)) // Defined as (rise + run) * inverse root 2
-            //gx: Math.sqrt(Math.pow(Math.abs(ind[id].x - ind[endID].x), 2) + Math.pow(Math.abs(ind[id].y - ind[endID].y), 2))
+            gx: gx[id][endID] // precalculated 
         };
     }
 
@@ -48,31 +43,26 @@ function shortestRoute(startID, endID, ind, icd) {
         for (let i in connected) {
             let j = connected[i].to
             if (connected[i].weight + routes[next].short < routes[j].short) {
-                routes[j].short = connected[i].weight + routes[next].short
-                routes[j].from = next
+                routes[j].short = connected[i].weight + routes[next].short;
+                routes[j].from = next;
             }
         }
 
         //Defines next as the next shortest
-        next = smallestShort(routes, checked, ind, endID)
-        checked.push(next)
+        next = smallestShort(routes, checked, ind, endID);
+        checked.push(next);
     }
 
     //Turns routes object into array of routes from start to end
-    var finalRoute = []
-    finalRoute.unshift(ind[endID])
+    var finalRoute = [];
+    finalRoute.unshift(ind[endID]);
     while (finalRoute[0].id != startID) {
-        //console.log(finalRoute[0].id)
-        finalRoute.unshift(ind[routes[finalRoute[0].id].from])
+        finalRoute.unshift(ind[routes[finalRoute[0].id].from]);
     }
-    return finalRoute
+    return finalRoute;
 }
+// printRoute(shortestRoute('1', '900', ind, icd))
 
-function printRoute(route) {
-    console.log("Answer")
-    for (let node in route) {
-        console.log(route[node].id)
-    }
+module.exports = {
+    shortest: shortestRoute
 }
-
-printRoute(shortestRoute('1', '900', ind, icd))

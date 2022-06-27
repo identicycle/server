@@ -1,5 +1,5 @@
-const ind = require('../sample_datas/ind');
-const icd = require('../sample_datas/icd');
+// const ind = require('../sample_data/ind');
+// const icd = require('../sample_data/icd');
 
 //Checkes routes for the next smallest node not checked
 function smallestShort(routes, checked) {
@@ -54,7 +54,8 @@ function shortestRoute(startID, endID, ind, icd) {
         next = smallestShort(routes, checked)
         checked.push(next)
         if (next == '-1') {
-            console.log("Error: end not found")
+            console.log("Error: end not found");
+            return;
         }
     }
 
@@ -131,4 +132,8 @@ function printRoute(route) {
     }
 }
 
-//printRoute(shortestRoute('1', '900', ind, icd))
+// printRoute(shortestRoute("1", "100", ind, icd))
+
+module.exports = {
+    shortest: shortestRoute
+}
