@@ -21,7 +21,7 @@ export default class SelectCard extends Component {
         onClick={() => this.props.switchCurrent(this.algorithm)}>
         <h4 className={`card-title ${this.algorithm}`}>{this.title}</h4>
         <BrowserView>
-          <SelectCardContent accuracy={this.props.accuracy}
+          <SelectCardContent accuracy={this.props.accuracy} distance={this.props.distance}
             time={this.props.time} overallTime={this.props.overallTime}/>
         </BrowserView>
       </div>

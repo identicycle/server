@@ -40,7 +40,7 @@ def generate(size = 100):
             for i in nodeAdj:
                 if i in already:
                     nodeAdj.remove(i)
-            for i in range(max(0, 3-len(already))):
+            for i in range(max(0, 2-len(already))):
                 edges.append([node[0], random.choice(nodeAdj), 10])
                 nodeAdj.remove(edges[-1][1])
     return [nodes, edges]
@@ -82,5 +82,5 @@ def makeFile(data):
             f.write('\n')
             idx+=1
         f.write(']')
-makeFile(generate(12))
+makeFile(generate(30))
             

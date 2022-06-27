@@ -16,20 +16,21 @@ export default class Selection extends Component {
   }
   
   render() {
+    console.log("by distance", this.props.byDistanceDistance)
     return (
       <div className={`selection ${isMobile ? "mobile" : "browser"}`} ref={this.props.wrapperRef}>
         <SelectCard title="By Distance" algorithm="byDistance" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
           time={this.props.byDistanceTime} overallTime={this.props.overallByDistanceTime}
-          accuracy={this.props.byDistanceAccuracy}/>
-        <SelectCard title="Sloppy Dijkstra" algorithm="sloppyDijkstra" 
+          distance={this.props.byDistanceDistance} accuracy={this.props.byDistanceAccuracy}/>
+        <SelectCard title="Sloppy Dijkstra" algorithm="fastDijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.sloppyDijkstraTime} overallTime={this.props.overallSloppyDijkstraTime}
-          accuracy={this.props.sloppyDijkstraAccuracy}/>
+          time={this.props.fastDijkstraTime} overallTime={this.props.overallfastDijkstraTime}
+          distance={this.props.fastDijkstraDistance} accuracy={this.props.fastDijkstraAccuracy}/>
         <SelectCard title="Dijkstra" algorithm="dijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
           time={this.props.dijkstraTime} overallTime={this.props.overallDijkstraTime}
-          accuracy={this.props.dijkstraAccuracy}/>
+          distance={this.props.dijkstraDistance} accuracy={this.props.dijkstraAccuracy}/>
         {/* <SelectCard title="Brute Force" algorithm="bruteForce" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
           time={this.props.bruteForceTime} overallTime={this.props.overallBruteForceTime}

@@ -12,7 +12,7 @@ import "./Graph.css";
 import data_analysis from './helperFunctions/dataAnalysis';
 import bruteForce from './routeFunctions/bruteForce';
 import dijkstra from './routeFunctions/dijkstra';
-import sloppyDijkstra from './routeFunctions/sloppyDijkstra';
+import fastDijkstra from './routeFunctions/fastDijkstra';
 import byDistance from './routeFunctions/byDistance';
 // import route_algorithms from './helperFunctions/routeAlgorithms';
 
@@ -108,7 +108,7 @@ export default class Graph extends Component {
       //set performance time to o
       this.props.updatePerformance({
         byDistanceTime: 0,
-        sloppyDijkstraTime: 0,
+        fastDijkstraTime: 0,
         dijkstraTime: 0,
         bruteForceTime: 0
       });
@@ -257,27 +257,32 @@ export default class Graph extends Component {
   findShortestPath(id) { //find the shortest path for all algoritm
     let origin = this.state.origin;
     let pathNodes, startTime, endTime;
-    let times = {}
+    let distances = {};
+    let times = {};
 
     startTime = new Date().getTime();
     pathNodes = byDistance.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
     endTime = new Date().getTime();
     this.createPathNodes(pathNodes, "byDistance");   
     times.byDistanceTime = endTime - startTime;
+    distances.byDistanceDistance = this.getDistance(pathNodes);
 
     startTime = new Date().getTime();
-    pathNodes = sloppyDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    pathNodes = fastDijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     endTime = new Date().getTime();
-    this.createPathNodes(pathNodes, "sloppyDijkstra");
-    times.sloppyDijkstraTime = endTime - startTime;
+    this.createPathNodes(pathNodes, "fastDijkstra");
+    times.fastDijkstraTime = endTime - startTime;
+    distances.fastDijkstraDistance = this.getDistance(pathNodes);
     
     startTime = new Date().getTime();
     pathNodes = dijkstra.shortest(`${origin.id}`, `${id}`, intersectional_node_data, intersectional_connection_data, this.gx);
     endTime = new Date().getTime();
     this.createPathNodes(pathNodes, "dijkstra");  
     times.dijkstraTime = endTime - startTime; 
+    distances.dijkstraDistance = this.getDistance(pathNodes);
 
     this.props.updatePerformance(times);
+    this.props.updatePerformance(distances);
 
     // startTime = new Date().getTime();
     // pathNodes = bruteForce.shortest(origin.id, id, intersectional_node_data, intersectional_connection_data, this.gx);
@@ -314,7 +319,7 @@ export default class Graph extends Component {
     })
   }
 
-  getDistance(startID, endID) { //optimize later
+  getAbsoluteDistance(startID, endID) { //get absolute distance between two nodes using gx optimize later
     if(this.gx[startID][endID]) {
       return this.gx[startID][endID];
     } else if(this.gx[endID][startID]) {
@@ -325,11 +330,23 @@ export default class Graph extends Component {
     }
   }
 
+  getDistance(path) {
+    let distance = 0;
+    path.forEach((node, i) => { //sum all weight to get ditance
+      //skip first
+      if(i === 0) return;
+
+      let previous = path[i-1];
+      distance += this.getAbsoluteDistance(previous.id, node.id);
+    });
+    return distance;
+  }
+
   checkPerformance() {
     let test, result;
     let overallTimes = {};
     let allPaths = {};
-    console.log("checking Performance")
+
     //check time performance
     let id_list = Object.keys(intersectional_node_data);
 
@@ -338,17 +355,16 @@ export default class Graph extends Component {
     overallTimes.overallByDistanceTime = result.time;
     allPaths.byDistance = result.paths;
 
-    test = (originID, destinationID) => sloppyDijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
+    test = (originID, destinationID) => fastDijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
     result = performance.checkTime(test, id_list);
-    overallTimes.overallSloppyDijkstraTime = result.time;
-    allPaths.sloppyDijkstra = result.paths;
+    overallTimes.overallfastDijkstraTime = result.time;
+    allPaths.fastDijkstra = result.paths;
 
     test = (originID, destinationID) => dijkstra.shortest(`${originID}`, `${destinationID}`, intersectional_node_data, intersectional_connection_data, this.gx);
     result = performance.checkTime(test, id_list);
     overallTimes.overallDijkstraTime = result.time;
     allPaths.dijkstra = result.paths;
 
-    console.log("time done")
     this.props.stopPerformanceCheck(overallTimes);
 
     //check accuracy distance as standard
@@ -356,7 +372,7 @@ export default class Graph extends Component {
     let accuracies = {};
     let standardDistance = 0;
     for(let id of id_list) { //add all distance from origin to every node to compare with algorithm
-      standardDistance += this.getDistance(originId, id);
+      standardDistance += this.getAbsoluteDistance(originId, id);
     }
 
     for(let algorithm in allPaths) { //check every algorithm
@@ -365,13 +381,7 @@ export default class Graph extends Component {
 
       for(let destinationId in paths) { //check for every destination
         let path = paths[destinationId]
-        path.forEach((node, i) => { //sum all weight to get ditance
-          //skip first
-          if(i === 0) return;
-
-          let previous = path[i-1];
-          distance += this.getDistance(previous.id, node.id);
-        });
+        distance += this.getDistance(path);
       }
 
       //compare the result with standard Distance
@@ -396,7 +406,7 @@ export default class Graph extends Component {
           pointerEvents="none"/>
         <g className= {`dijkstra ${current === "dijkstra" ? "" : "hidden"}`}
           pointerEvents="none"/>
-        <g className= {`sloppyDijkstra ${current === "sloppyDijkstra" ? "" : "hidden"}`}
+        <g className= {`fastDijkstra ${current === "fastDijkstra" ? "" : "hidden"}`}
           pointerEvents="none"/>
         <g className= {`byDistance ${current === "byDistance" ? "" : "hidden"}`}
           pointerEvents="none"/>

@@ -18,18 +18,22 @@ export default class App extends Component {
     this.state = {
       width: 100,
       height: 100,
-      algorithm: "sloppyDijkstra",
+      algorithm: "fastDijkstra",
       bruteForceTime: 0,
       dijkstraTime: 0,
-      sloppyDijkstraTime: 0,
+      fastDijkstraTime: 0,
       byDistanceTime: 0,
+      bruteForceDistance: 0,
+      dijkstraDistance: 0,
+      fastDijkstraDistance: 0,
+      byDistanceDistance: 0,
       overallBruteForceTime: 0,
       overallDijkstraTime: 0,
-      overallSloppyDijkstraTime: 0,
+      overallfastDijkstraTime: 0,
       overallByDistanceTime: 0,
       bruteForceAccuracy: 0,
       dijkstraAccuracy: 0,
-      sloppyDijkstraAccuracy: 0,
+      fastDijkstraAccuracy: 0,
       byDistanceAccuracy: 0,
       checkingPerformance: false
     }
@@ -95,6 +99,7 @@ export default class App extends Component {
             { isMobile &&
             <SelectCardContent 
               time={this.state[`${algorithm}Time`]} 
+              distance={this.state[`${algorithm}Distance`]} 
               overallTime={this.state[`overall${algorithm[0].toUpperCase() + algorithm.slice(1)}Time`]}
               accuracy={this.state[`${algorithm}Accuracy`]}/>}
           </div>
@@ -102,15 +107,19 @@ export default class App extends Component {
             <Selection current={this.state.algorithm} switchCurrent={this.switchCurrent}
               bruteForceTime={this.state.bruteForceTime}
               dijkstraTime={this.state.dijkstraTime}
-              sloppyDijkstraTime={this.state.sloppyDijkstraTime}
+              fastDijkstraTime={this.state.fastDijkstraTime}
               byDistanceTime={this.state.byDistanceTime}
+              bruteForceDistance={this.state.bruteForceDistance}
+              dijkstraDistance={this.state.dijkstraDistance}
+              fastDijkstraDistance={this.state.fastDijkstraDistance}
+              byDistanceDistance={this.state.byDistanceDistance}
               overallBruteForceTime={this.state.overallBruteForceTime}
               overallDijkstraTime={this.state.overallDijkstraTime}
-              overallSloppyDijkstraTime={this.state.overallSloppyDijkstraTime}
+              overallfastDijkstraTime={this.state.overallfastDijkstraTime}
               overallByDistanceTime={this.state.overallByDistanceTime}
               bruteForceAccuracy={this.state.bruteForceAccuracy}
               dijkstraAccuracy={this.state.dijkstraAccuracy}
-              sloppyDijkstraAccuracy={this.state.sloppyDijkstraAccuracy}
+              fastDijkstraAccuracy={this.state.fastDijkstraAccuracy}
               byDistanceAccuracy={this.state.byDistanceAccuracy}
               checkingPerformance={this.state.checkingPerformance}
               wrapperRef={this.selectionRef}/>
