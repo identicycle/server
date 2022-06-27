@@ -29,7 +29,7 @@ export default class App extends Component {
       byDistanceDistance: 0,
       overallBruteForceTime: 0,
       overallDijkstraTime: 0,
-      overallfastDijkstraTime: 0,
+      overallFastDijkstraTime: 0,
       overallByDistanceTime: 0,
       bruteForceAccuracy: 0,
       dijkstraAccuracy: 0,
@@ -115,7 +115,7 @@ export default class App extends Component {
               byDistanceDistance={this.state.byDistanceDistance}
               overallBruteForceTime={this.state.overallBruteForceTime}
               overallDijkstraTime={this.state.overallDijkstraTime}
-              overallfastDijkstraTime={this.state.overallfastDijkstraTime}
+              overallFastDijkstraTime={this.state.overallFastDijkstraTime}
               overallByDistanceTime={this.state.overallByDistanceTime}
               bruteForceAccuracy={this.state.bruteForceAccuracy}
               dijkstraAccuracy={this.state.dijkstraAccuracy}

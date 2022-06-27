@@ -16,16 +16,15 @@ export default class Selection extends Component {
   }
   
   render() {
-    console.log("by distance", this.props.byDistanceDistance)
     return (
       <div className={`selection ${isMobile ? "mobile" : "browser"}`} ref={this.props.wrapperRef}>
         <SelectCard title="By Distance" algorithm="byDistance" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
           time={this.props.byDistanceTime} overallTime={this.props.overallByDistanceTime}
           distance={this.props.byDistanceDistance} accuracy={this.props.byDistanceAccuracy}/>
-        <SelectCard title="Sloppy Dijkstra" algorithm="fastDijkstra" 
+        <SelectCard title="Fast Dijkstra" algorithm="fastDijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
-          time={this.props.fastDijkstraTime} overallTime={this.props.overallfastDijkstraTime}
+          time={this.props.fastDijkstraTime} overallTime={this.props.overallFastDijkstraTime}
           distance={this.props.fastDijkstraDistance} accuracy={this.props.fastDijkstraAccuracy}/>
         <SelectCard title="Dijkstra" algorithm="dijkstra" 
           current={this.props.current} switchCurrent={this.props.switchCurrent}
