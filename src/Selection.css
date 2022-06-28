@@ -24,7 +24,7 @@
 
 .card.browser {
   width: 90%;
-  height: 18vh;
+  /* height: 18vh; */
   margin-top: 1vh;
   border: 2px #c3cac7 solid;
   border-left: 0;
