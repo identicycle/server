@@ -22,7 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "serve -s build"
+    "deploy": "serve -s build",
+    "create": "python3 ./python_data_generator/graphGenerator.py"
   },
   "eslintConfig": {
     "extends": [

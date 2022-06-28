@@ -110,7 +110,11 @@ export default class Graph extends Component {
         byDistanceTime: 0,
         fastDijkstraTime: 0,
         dijkstraTime: 0,
-        bruteForceTime: 0
+        bruteForceTime: 0,
+        byDistanceDistance: 0,
+        fastDijkstraDistance: 0,
+        dijkstraDistance: 0,
+        bruteForceDistance: 0
       });
 
     }

@@ -26,6 +26,8 @@
   width: 90%;
   /* height: 18vh; */
   margin-top: 1vh;
+  padding-top: 5%;
+  padding-bottom: 5%;
   border: 2px #c3cac7 solid;
   border-left: 0;
   border-top-right-radius: 1vh;
