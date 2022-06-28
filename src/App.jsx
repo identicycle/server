@@ -53,7 +53,7 @@ export default class App extends Component {
       this.resizeMobile();
       window.removeEventListener("resize", this.resizeMobile);
     }
-    this.startPerformanceCheck();
+    // this.startPerformanceCheck();
   }
 
   switchCurrent(algorithm) { //switch to different algorithm
