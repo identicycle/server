@@ -34,9 +34,11 @@
 }
 
 .app-container.browser{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   width: 87vw;
   height: 87vh;
-  justify-content: center;
 }
 
 .app-container.mobile {
@@ -44,58 +46,4 @@
   height: 100%;
   flex-direction: column;
   align-items: center;
-}
-
-#svg-graph-container {
-  display: flex;
-  background-color: #fefefe;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#svg-graph-container.browser{
-  width: 70%;
-  height: 100%;
-  border: #e9e9e9 2px solid;
-  border-right: #5bb9b8 1vw solid;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-
-#svg-graph-container.mobile {
-  width: 100%;
-  height: 85%;
-  padding-top: 3%;
-  padding-bottom: 3%;
-  border-bottom: #5bb9b8 1vw solid;
-}
-
-.selection-container.browser {
-  width: 18%;
-  margin-top: 5%;
-}
-
-.selection-container.mobile {
-  width: 100%;
-  height: 15%;
-}
-
-.bruteForce {
-  fill: grey;
-  /* background-color: grey; */
-}
-
-.dijkstra {
-  fill: #143653;
-  /* background-color: blue; */
-}
-
-.fastDijkstra {
-  fill: #603082;
-  /* background-color: purple; */
-}
-
-.byDistance {
-  fill: #c34c33;
-  /* background-color: red; */
 }
