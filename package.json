@@ -20,7 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "serve -s build"
+    "deploy": "serve -s build",
+    "pyserver": "python3 server/server.py"
   },
   "eslintConfig": {
     "extends": [
