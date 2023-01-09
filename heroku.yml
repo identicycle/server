@@ -3,6 +3,6 @@
 build:
   docker:
     web: Dockerfile
-# run:
-#   web: bundle exec puma -C config/puma.rb
+run:
+  web: gunicorn -b 3000:8080 main:app
 #
