@@ -8,4 +8,4 @@ def home():
   return app.send_static_file('index.html')  # Return index.html from the static folder
 
 if __name__ == '__main__':  # If the script that was run is this script (we have not been imported)
-  app.run()  # Start the server
+  app.run(host="localhost", port=8080, debug=True)  # Start the server
