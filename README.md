@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## RUN WITH DOCKER
+
+```
+  docker build -f Dockerfile -t trash-saver-web
+  docker run --rm -p 3000:3000 trash-saver-web
+```
+
 ## TO RUN THE SERVER
 
 ```
