@@ -1,6 +1,8 @@
 from flask import Flask  # Import flask
 
-app = Flask(__name__, static_folder='./build', static_url_path='/')  # Setup the flask app by creating an instance of Flask
+app = Flask(__name__, static_folder='../build', static_url_path='/')  # Setup the flask app by creating an instance of Flask
+
+print("Running???")
 
 @app.route('/')  # When someone goes to / on the server, execute the following function
 
