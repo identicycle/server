@@ -1,4 +1,5 @@
-from flask import Flask  # Import flask
+from flask import Flask, request  # Import flask
+from flask_restful import Api, Resource
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')  # Setup the flask app by creating an instance of Flask
 
