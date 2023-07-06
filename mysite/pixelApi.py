@@ -17,10 +17,9 @@ for image in images:
         #Returns response as JSON file
         keywords = requests.post('https://api.everypixel.com/v1/keywords', files=data, auth=(client_id, client_secret)).json()
     
-    #Prints the keywords
-    print("This image: ", keywords) 
-    print("")
+    with open('dum.json', 'a') as outfile:
+        json.dump(keywords, outfile, indent=4)
     
-jsonFile = open('dum.json', 'w')
-jsonFile.write(str(keywords))
-jsonFile.close()
+    #Prints the keywords
+    print("This image: ", keywords['keywords']) 
+    print("")
