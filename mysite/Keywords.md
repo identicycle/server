@@ -26,4 +26,7 @@ The Everypixel API is a __PAID__ service. We get a hundred free requests per day
 
 ## How to use the Everypixel API
 
-The file pixelApi.py contains the code needed to use the Everypixel API. 
+For this, you will need to go to the pixelApi.py file. The code to connect to the API, send requests, obtain responses, and more, will be kept on that file. Everything has comments to make it manageable for anyone to use it, but here is a brief rundown of how it words.
+
+* Credentials: Two variables for credentials are already done for you. There is no need to change them unless a new secret key is created.
+* Reading from Folder: There is code done to loop through the folder called "testDat" to read all .jpg images, including those in sub-folders - be mindful that for now it only reads __.jpg__ files.

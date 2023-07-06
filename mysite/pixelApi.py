@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 
 #Identifications
-client_id = 'bSUVOTMAqM81lkyhBF7uNwk7'
-client_secret = 'XKHHcW8xpKiH12D2orQFPaQjpLpOvOxIY6EHp7nUvil9z9uc'
+client_id = 'FAFurpy5mH24X5xCBJY24ZBu'
+client_secret = 'ieItRG4MrbJ50mGUnN0rDxGtPTHxl9OgDYyWQUm5SWNvCelz'
 
 #Reads all .jpg Files from the testDat Folder
 input_dir = Path.cwd()/'testDat'
@@ -21,11 +21,6 @@ for image in images:
     print("This image: ", keywords) 
     print("")
     
-# with open("test_textile.jpg",'rb') as image:
-#     data = {'data': image}
-#     keywords = requests.post('https://api.everypixel.com/v1/keywords', files=data, auth=(client_id, client_secret)).json()
-# print("This image: ", keywords)
-   
-    
-
-
+jsonFile = open('dum.json', 'w')
+jsonFile.write(str(keywords))
+jsonFile.close()
