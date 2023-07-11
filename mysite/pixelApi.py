@@ -11,10 +11,13 @@ input_dir = Path.cwd()/'dataTest'
 images = list(input_dir.rglob("*.jpg")) #Everything is stored in glass
 
 categories = {
-  "ewaste": ["technology", "engineering", "machine part", "manufacturing equipment", "mechanic", "machinery", "computer", "computer monitor", "semiconductor", "computer part", "cpu", "industry", "computer chip", "mother board", "circuit board", ""],
-  "plastic": ["plastic", "bottle"],
-  "ewaste": ["laptop", "battery"],
-  "textile": ["clothing", "fashion", "textile"]
+  "ewaste": ["technology", "engineering", "machine part", "manufacturing equipment", "mechanic", "machinery", "computer", "computer monitor", "semiconductor", "computer part", "cpu", "industry", "computer chip", "mother board", "circuit board", "telephone", "computer keyboard", "factory", "equipment", "electrical component", "capacitor", "laptop", "data"],
+  "glass": ["glass", "bottle", "wine bottle", "transparent", "drink", "jar"],
+  "metal": ["metal", "crumpled", "wrinkled", "crushed", "shiny", "gold", "jewelry", "equipment", "industry", "metal ore"],
+  "organic": ["food", "healthy eating", "organic", "freshness", "begetable", "fruit", "apple", "tomato", "healthy lifestyle", "agriculture", "raw potato", "harvesting", "plant", "lime", "vegetarian food", "juicy", "ripe", "pineaple", "desert", "sweet", "anise", "cucumber", "seafood", "fish", "meal", "healthy", "lemon", "cooking", "appetizer", "meat", "chocolate", "salad"],
+  "paper": ["paper", "crumpled", "book", "education", "newspaper", "text", "editorial", "packet", "document", "envelope", "mail", "communication", "crumple", "blank"],
+  "plastic": ["plastic", "bottle", "trasparent", "container", "recycling"],
+  "trash": ["crumpled", "wrinkled", "bag", "gargabe", "damaged"]
 }
 
 filteredResponse = []
@@ -24,7 +27,7 @@ for image in images:
     with open(image,'rb') as image:
         data = {'data': image}
         #Returns response as JSON file
-        keywords = requests.post('https://api.everypixel.com/v1/keywords', files=data, auth=(client_id, client_secret)).json()
+        response = requests.post('https://api.everypixel.com/v1/keywords', files=data, auth=(client_id, client_secret)).json()
 
     for keywordJSON in response["keywords"]:
         keyword, score = keywordJSON.values()
