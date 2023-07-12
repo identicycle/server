@@ -10,6 +10,11 @@ client_secret = 'ieItRG4MrbJ50mGUnN0rDxGtPTHxl9OgDYyWQUm5SWNvCelz'
 input_dir = Path.cwd()/'dataTest'
 images = list(input_dir.rglob("*.jpg")) #Everything is stored in glass
 
+namelist = list(input_dir.rglob("*.jpg"))
+
+for each_name in namelist:
+    print(Path(each_name).name)
+
 categories = {
   "ewaste": ["technology", "engineering", "machine part", "manufacturing equipment", "mechanic", "machinery", "computer", "computer monitor", "semiconductor", "computer part", "cpu", "industry", "computer chip", "mother board", "circuit board", "telephone", "computer keyboard", "factory", "equipment", "electrical component", "capacitor", "laptop", "data"],
   "glass": ["glass", "bottle", "wine bottle", "transparent", "drink", "jar"],
@@ -39,7 +44,8 @@ for image in images:
             "score": score,
             "category": category
         })
-
-    print(filteredResponse)
             
-    
+    print("Current response: ", filteredResponse, "\n")
+
+with open('keywords.json', 'w') as key_file:
+    json.dump(filteredResponse, key_file, indent=4)
