@@ -11,6 +11,7 @@ folder = "trash"
 input_dir = Path.cwd()/f'dataTest/{folder}'
 images = list(input_dir.rglob("*.jpg")) #Everything is stored in glass
 
+#All keywords needed for all of the categories
 categories = {
   "ewaste": ["technology", "engineering", "machine part", "manufacturing equipment", "mechanic", "machinery", "computer", "computer monitor", "semiconductor", "computer part", "cpu", "industry", "computer chip", "mother board", "circuit board", "telephone", "computer keyboard", "factory", "equipment", "electrical component", "capacitor", "laptop", "data"],
   "glass": ["glass", "bottle", "wine bottle", "transparent", "drink", "jar"],
@@ -21,10 +22,10 @@ categories = {
   "trash": ["crumpled", "wrinkled", "bag", "gargabe", "damaged"]
 }
 
-#Total responses
+#Total responses - This dictionary will be the filtered output for the JSON file
 totalResponse = {}
 
-#Total Raw Keywords
+#Total Raw Keywords - This temporary dictionary gets the unfiltered keywords for the output
 totalRawKeywords = {}
 
 #Loops through data requests
@@ -36,6 +37,7 @@ for image in images:
     #Filtered keywords, scores, and categories
     filteredResponse = []
     
+    #Opens image and 
     with open(image,'rb') as image:
         data = {'data': image}
         #Returns response as JSON file

@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yi&w3@yu67oq)w^1_mc$p4@6j^)e9xr^y5n7gp^if5(db!g!pw'
+SECRET_KEY = 'django-insecure-jrzioz@m_d8dmuwje#-7h-@tbw6l!pm@hbz9ke^&c-t77s_f@x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,8 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
-    'main.apps.MainConfig',
 ]
 
 MIDDLEWARE = [
@@ -117,9 +114,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-EVERYPIXEL_API_URL = 'https://api.everypixel.com/v1/keywords'
-EVERYPIXEL_API_KEY = 'ieItRG4MrbJ50mGUnN0rDxGtPTHxl9OgDYyWQUm5SWNvCelz'
 
 STATIC_URL = 'static/'
 
