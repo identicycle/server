@@ -45,20 +45,20 @@ for image in images:
     
     totalRawKeywords[fileName] = response["keywords"]
 
-    # for keywordJSON in response["keywords"]:
-    #     keyword, score = keywordJSON.values()
+    for keywordJSON in response["keywords"]:
+        keyword, score = keywordJSON.values()
 
-    #     for category, keywords in categories.items():
-    #         if keyword in keywords:
-    #             filteredResponse.append({
-    #                 "keyword": keyword,
-    #                 "score": score,
-    #                 "category": category
-    #             })
+        for category, keywords in categories.items():
+            if keyword in keywords:
+                filteredResponse.append({
+                    "keyword": keyword,
+                    "score": score,
+                    "category": category
+                })
             
-    # totalResponse[fileName] = filteredResponse
+    totalResponse[fileName] = filteredResponse
             
-    # print("Current response: ", filteredResponse, "\n")
+    print("Current response: ", filteredResponse, "\n")
 
     with open(f'keywords_{folder}.json', 'w') as key_file:
         json.dump(totalRawKeywords, key_file, indent=4)
